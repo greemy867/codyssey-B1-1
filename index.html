@@ -38,6 +38,17 @@
     cursor:pointer;border-bottom:2.5px solid transparent;white-space:nowrap;font-family:inherit}
   .tab:hover{color:var(--txt)}
   .tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+  /* sub-tabs (모델별 결과) */
+  .subtabs{display:flex;gap:8px;margin:16px 0 20px;flex-wrap:wrap}
+  .subtab{padding:9px 18px;border-radius:10px;border:1px solid var(--line);background:var(--panel);
+    color:var(--muted);font-weight:700;font-size:14px;cursor:pointer;font-family:inherit}
+  .subtab:hover{color:var(--txt)}
+  .subtab.active{background:rgba(118,185,0,.15);color:var(--accent);border-color:rgba(118,185,0,.5)}
+  .subpanel{display:none}
+  .subpanel.active{display:block;animation:fade .2s ease}
+  .modelhead{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0 4px}
+  .oneliner{background:var(--panel2);border-left:3px solid var(--accent);border-radius:0 10px 10px 0;
+    padding:14px 18px;margin:14px 0;color:var(--txt)}
   /* layout */
   main{max-width:1080px;margin:0 auto;padding:32px 24px 80px}
   section{display:none;animation:fade .25s ease}
@@ -110,6 +121,7 @@
   <div class="tabs-wrap">
     <button class="tab active" data-t="overview">개요</button>
     <button class="tab" data-t="compare">① 모델 비교·선정</button>
+    <button class="tab" data-t="results">🔬 모델별 결과</button>
     <button class="tab" data-t="design">② 시스템 설계</button>
     <button class="tab" data-t="log">③ 실행 로그</button>
     <button class="tab" data-t="raw">원본 결과</button>
@@ -385,6 +397,227 @@
   </table>
 </section>
 
+<!-- ============ RESULTS (모델별 전체 결과) ============ -->
+<section id="results">
+  <h2>🔬 모델별 결과 — 같은 과업, 3종 모델 전체 출력</h2>
+  <p class="small"><b>과업:</b> 인터뷰 전문(Lex Fridman ↔ Jensen Huang) → 업무용 구조화 브리프 요약 ·
+  <b>입력:</b> 세 모델에 100% 동일(<code>prompts/comparison_prompt.md</code>). 아래 탭에서 각 모델이 실제로 생성한
+  <b>전체 결과</b>를 직접 읽고 비교할 수 있습니다. (원본: <code>logs/raw_*.md</code>)</p>
+
+  <div class="subtabs">
+    <button class="subtab active" data-s="m-claude">🥇 Claude Opus 4.8 · 34</button>
+    <button class="subtab" data-s="m-gpt5">🥈 GPT-5 · 32</button>
+    <button class="subtab" data-s="m-gemini">🥈 Gemini 2.5 Pro · 32</button>
+  </div>
+
+  <!-- ===== Claude ===== -->
+  <div class="subpanel active" id="m-claude">
+    <div class="modelhead">
+      <span class="pill">모델 Claude Opus 4.8</span><span class="pill">채널 API</span>
+      <span class="pill">실행 2026-06-04</span><span class="tag info">합계 34/35</span>
+    </div>
+    <div class="oneliner"><b>📌 한 줄 요약</b><br>
+      젠슨 황은 NVIDIA의 성공을 "칩이 아닌 데이터센터 전체를 묶는 extreme co-design", "아키텍처의 운명을 가르는
+      install base(CUDA)", "확률·근거 기반으로 미래를 미리 manifest하는 리더십"으로 설명하며, AI 컴퓨팅이
+      '검색 창고'에서 '토큰 공장'으로 이동했다고 진단합니다.</div>
+    <h4>🎯 핵심 메시지</h4>
+    <ul>
+      <li><b>Extreme co-design</b> — 문제가 한 대의 GPU에 안 들어가므로 칩·CPU·네트워킹·전력·냉각·SW·랙·데이터센터까지 전 스택을 동시 설계. Amdahl 법칙과 분산 처리가 근본 이유.</li>
+      <li><b>Install base가 아키텍처를 결정한다</b> — 우아함이 아니라 설치 기반이 승패를 가른다(x86 사례). 최대 해자는 CUDA install base와 생태계.</li>
+      <li><b>4개의 스케일링 법칙</b> — 사전학습→사후학습→테스트타임(추론=사고)→에이전트로 확장, 결국 지능은 '컴퓨트'로 스케일.</li>
+      <li><b>창고에서 공장으로</b> — 컴퓨팅이 retrieval→generative로 바뀌며 컴퓨터의 목적이 매출을 만드는 'AI 공장'으로 변함.</li>
+      <li><b>지능은 상품, 인간성은 그 위</b> — AGI는 "이미 도달"이라 보지만, 진짜 중요한 건 지능이 아니라 인간성·인격.</li>
+    </ul>
+    <h4>🗂️ 주제별 요약</h4>
+    <ul>
+      <li><b>회사 운영</b>: 직속 60명, 1:1 없음. "모든 문제를 다 같이 공격한다." 조직도는 산출물을 반영해야.</li>
+      <li><b>리더십·미래 manifest</b>: 매일 신념 체계를 형성해 발표 시 "왜 이제야?" 반응. Mellanox 인수·딥러닝 올인이 예시.</li>
+      <li><b>스케일링·블로커</b>: 데이터 한계는 합성 데이터로 극복. 추론은 사고라 컴퓨트 집약. 모델 ~6개월·HW ~3년 주기.</li>
+      <li><b>에이전트·OpenClaw</b>: 2년 전 GTC 스키마가 현재 OpenClaw와 동일. 보안은 '3개 중 2개 권한' 원칙.</li>
+      <li><b>전력</b>: 전력망은 최악 상황 기준이라 99% 유휴. graceful degradation으로 유휴분 활용. 6 nines 3자 문제.</li>
+      <li><b>공급망·메모리</b>: 랙당 130만~150만 부품, 200개 공급사, 주당 ~200 pod. HBM·LPDDR 메인스트림화 설득.</li>
+      <li><b>Elon/Colossus</b>: 4개월 만에 20만 GPU. 미니멀리즘, 현장 직접, 모든 것을 질문.</li>
+      <li><b>엔지니어링 철학</b>: 30년 된 'speed of light'. 점진 개선보다 zero 재설계. "필요한 만큼 복잡하게, 가능한 한 단순하게."</li>
+      <li><b>China</b>: 세계 AI 연구자 ~50% 중국계. 빌더 국가, 오픈소스 친화, 내부 경쟁 치열.</li>
+      <li><b>오픈소스/Nemotron</b>: Nemotron 3 Super(1200억 MoE, transformer+SSM). 가중치·데이터·제작법 공개.</li>
+      <li><b>TSMC·대만</b>: 핵심은 수요 조율 능력과 신뢰. 30년 거래·계약 없음. 2013년 Morris Chang의 CEO 제안 거절.</li>
+      <li><b>해자</b>: ①CUDA install base ②수직설계+수평통합 생태계. CUDA는 4.3만 명과 수백만 개발자가 만듦.</li>
+      <li><b>$10조/우주</b>: retrieval→generative, warehouse→factory로 성장은 "불가피". $3조 매출도 가능. NVIDIA GPU는 이미 우주 가동.</li>
+      <li><b>리더십·압박</b>: 문제 분해→위임→잊기. "How hard can it be?"의 동심. 공개적으로 일해 늘 겸손.</li>
+      <li><b>비디오게임</b>: GeForce는 1순위 마케팅. DLSS 5는 슬롭이 아니라 아티스트 의도 충실 도구. 가장 영향력 큰 게임=Doom.</li>
+      <li><b>AGI·프로그래밍</b>: "이미 AGI 도달." 코딩=명세, 코더 3000만→10억. 방사선과 사례로 '직무 목적≠작업' 설명.</li>
+      <li><b>의식·인간성</b>: 칩은 긴장 안 함. 지능은 상품, 인간성·연민은 초인적. "설거지하던 내가 60명 슈퍼휴먼을 조율."</li>
+      <li><b>죽음</b>: 죽고 싶지 않다. 승계 계획 불신 — 끊임없이 지식 전수. "일하다 죽고 싶다."</li>
+    </ul>
+    <h4>💬 주목할 인용</h4>
+    <ul>
+      <li class="quote">"Install base defines an architecture. Not… Everything else is secondary." — Jensen Huang</li>
+      <li class="quote">"I always say that NVIDIA is the house that GeForce built." — Jensen Huang</li>
+      <li class="quote">"I think it's now. I think we've achieved AGI." — Jensen Huang</li>
+      <li class="quote">"We need things to be as complex as necessary, but as simple as possible." — Jensen Huang</li>
+      <li class="quote">"It is the most complex computer the world has ever made." — Jensen Huang</li>
+      <li class="quote">"I actually think intelligence is a commodity." — Jensen Huang</li>
+    </ul>
+    <h4>🔢 사실·수치 주장 (검증 대상)</h4>
+    <table>
+      <tr><th>주장</th><th>화자</th><th>확인</th></tr>
+      <tr><td>CUDA 도입으로 GPU 원가 약 50% 증가</td><td>Jensen</td><td>원문 근거 있음</td></tr>
+      <tr><td>당시 매출총이익률 35%</td><td>Jensen</td><td>원문 근거 있음</td></tr>
+      <tr><td>CUDA 출시 후 시총 약 $1.5B로 하락</td><td>Jensen</td><td>원문 근거(직전 수치는 불확실)</td></tr>
+      <tr><td>하락 직전 시총 약 $6~8B</td><td>Jensen</td><td>⚠️ 화자도 불확실 — 단정 불가</td></tr>
+      <tr><td>직속 스태프 60명, 1:1 안 함</td><td>Jensen</td><td>원문 근거 있음</td></tr>
+      <tr><td>언급된 인수: Mellanox</td><td>Jensen</td><td>원문 근거 있음</td></tr>
+      <tr><td>Colossus 20만 GPU·4개월</td><td>Lex</td><td>원문 근거 있음</td></tr>
+      <tr><td>세계 AI 연구자 ~50% 중국계</td><td>Jensen</td><td>근사치("plus or minus")</td></tr>
+      <tr><td>Nemotron 3 Super = 1200억 MoE</td><td>Lex</td><td>원문 근거 있음</td></tr>
+      <tr><td>코더 3000만→10억 전망</td><td>Jensen</td><td>전망</td></tr>
+      <tr><td>CUDA 성공 기여 4.3만 명</td><td>Jensen</td><td>원문 근거 있음</td></tr>
+    </table>
+    <h4>⚠️ 확인 필요·불확실</h4>
+    <ul>
+      <li>"CUDA 직전 시총"은 화자 본인이 "$6~8B 정도, 잘 모르겠다"고 함 → 단정 불가.</li>
+      <li>"AGI 도달", "$3조 매출 가능", "5년 내 생물학적 기계 이해"는 <b>화자의 전망/의견</b>.</li>
+      <li>"AI 연구자 50% 중국계"는 근사치 → 출처 확인 권장.</li>
+      <li>본 인터뷰에 NVIDIA 구체 연매출/회계연도 실적 수치는 <b>없음</b>.</li>
+    </ul>
+    <h4>✅ 후속 액션</h4>
+    <ul>
+      <li>수치 주장은 사내 공유 전 NVIDIA 공식 자료(IR/키노트)로 교차 검증.</li>
+      <li>"AGI 도달"·"$3조 매출" 등은 인용 시 "젠슨 황의 견해"로 명시.</li>
+      <li>메인 앵글 3개 추천: install base · AI 공장 · 지능=상품 vs 인간성.</li>
+    </ul>
+  </div>
+
+  <!-- ===== GPT-5 ===== -->
+  <div class="subpanel" id="m-gpt5">
+    <div class="modelhead">
+      <span class="pill">모델 GPT-5 (codex)</span><span class="pill">채널 CLI</span>
+      <span class="pill">실행 2026-06-04</span><span class="pill">토큰 ~43K</span><span class="tag info">합계 32/35</span>
+    </div>
+    <div class="oneliner"><b>📌 한 줄 요약</b><br>
+      젠슨 황은 NVIDIA의 핵심 경쟁력을 CUDA 설치 기반과 생태계, 극단적 공동설계, 미래를 "추론하고 설득해 실현하는"
+      리더십으로 설명하며, AI 스케일링의 병목은 결국 컴퓨트·전력·공급망 실행력으로 귀결된다고 말했습니다.</div>
+    <h4>🎯 핵심 메시지</h4>
+    <ul>
+      <li>NVIDIA는 칩 경쟁을 넘어 랙·포드·데이터센터·전력망까지 포함하는 "AI factory" 단위 컴퓨팅 회사로 전환 중.</li>
+      <li>리더십은 소수 비공개 결정보다, 매일 공개적으로 추론을 공유하며 조직·파트너·공급망의 믿음을 미리 형성.</li>
+      <li>CUDA의 최대 해자는 기술 자체보다 설치 기반·개발자 신뢰·장기 유지/개선 약속.</li>
+      <li>AI 스케일링은 사전학습·사후학습·테스트타임·에이전트로 확장, 최종 제약은 데이터→컴퓨트로 이동.</li>
+      <li>전력은 신규 발전뿐 아니라 기존 전력망 유휴 용량 활용·성능 저하 허용 설계·계약 구조 변화로 해소 가능.</li>
+    </ul>
+    <h4>🗂️ 주제별 요약</h4>
+    <ul>
+      <li><b>극단적 공동설계·AI factory 전환</b>: 한 GPU에 안 들어가는 문제 → 전 스택 공동설계. Amdahl 법칙으로 병목 이동. 설계 단위 GPU→클러스터→AI factory→행성 규모.</li>
+      <li><b>운영·리더십</b>: 직속 60명+·1:1 없음, 다전문가 공동 공격. "결정 후 발표"가 아닌 신념 형성형. Mellanox·딥러닝·Grok/OpenClaw가 예.</li>
+      <li><b>CUDA 전략·해자</b>: GeForce 탑재는 총이익 압박한 실존적 베팅. 해자=설치 기반 + 수직통합·수평 생태계.</li>
+      <li><b>AI 스케일링</b>: 4단계 법칙. 데이터 부족은 합성 데이터로, 추론 병목은 고성능 컴퓨팅으로. 다음은 에이전트 스케일링.</li>
+      <li><b>공급망·전력</b>: 업/다운스트림 CEO 설득으로 선제 투자 유도. 전력망 유휴 용량+성능 저하 허용으로 확장.</li>
+      <li><b>중국·오픈소스·TSMC</b>: 교육·타이밍·지방 경쟁·오픈소스 문화 → "builder nation". TSMC 핵심=제조 시스템·서비스·신뢰.</li>
+      <li><b>AI와 일자리·프로그래밍</b>: 직업의 목적≠태스크(방사선과 사례). 코딩=명세 작성, 코더 3천만→10억.</li>
+      <li><b>압박·회복탄력성·인간성</b>: 문제 분해·공유·잊기. 지능은 상품화 가능하나 인간성·성품·연민은 별도 가치.</li>
+    </ul>
+    <h4>💬 주목할 인용</h4>
+    <ul>
+      <li class="quote">"The problem no longer fits inside one computer to be accelerated by one GPU." — Jensen Huang</li>
+      <li class="quote">"No conversation is ever one person. That's why I don't do one-on-ones." — Jensen Huang</li>
+      <li class="quote">"Install base defines an architecture. Everything else is secondary." — Jensen Huang</li>
+      <li class="quote">"Inference is thinking, and I think thinking is hard." — Jensen Huang</li>
+      <li class="quote">"We need things to be as complex as necessary, but as simple as possible." — Jensen Huang</li>
+      <li class="quote">"The purpose of your job and the tasks and tools that you use to do your job are related, not the same." — Jensen Huang</li>
+      <li class="quote">"I think it's now. I think we've achieved AGI." — Jensen Huang</li>
+    </ul>
+    <h4>🔢 사실·수치 주장 (가장 풍부 — 발췌)</h4>
+    <table>
+      <tr><th>주장</th><th>근거/화자</th><th>확인</th></tr>
+      <tr><td>직속 스태프 60명 이상</td><td>Jensen ("My direct staff is 60 people")</td><td>원문 확인됨</td></tr>
+      <tr><td>CUDA로 GPU 비용 50%↑, 당시 마진 35%</td><td>Jensen</td><td>외부 재무자료 확인 필요</td></tr>
+      <tr><td>시총 약 $6~8B → $1.5B 하락</td><td>Jensen</td><td>외부 시장자료 확인 필요</td></tr>
+      <tr><td>모델 ~6개월·시스템/HW ~3년 주기</td><td>Jensen</td><td>추정성, 확인 필요</td></tr>
+      <tr><td>CUDA 버전 13.2</td><td>Jensen</td><td>외부 문서 확인 필요</td></tr>
+      <tr><td>Vera Rubin pod: 7칩타입·40랙·1.2 quadrillion 트랜지스터·~20K dies·1,100+ Rubin GPU·60 exaflops</td><td>Lex</td><td>발표자료 확인 필요</td></tr>
+      <tr><td>NVL72 랙: 130만 부품·1,300칩</td><td>Lex</td><td>사양 확인 필요</td></tr>
+      <tr><td>주 ~200 pod 생산 필요</td><td>Jensen</td><td>전망성, 확인 필요</td></tr>
+      <tr><td>AI 연구자 ~50% 중국계</td><td>Jensen</td><td>통계 출처 확인 필요</td></tr>
+      <tr><td>Nemotron 3 Super = 120B MoE</td><td>Lex</td><td>모델 카드 확인 필요</td></tr>
+      <tr><td>TSMC 30년·계약 없음</td><td>Jensen</td><td>외부 확인 필요</td></tr>
+      <tr><td>NVIDIA 직원 43,000명</td><td>Jensen</td><td>최신 수치 확인 필요</td></tr>
+      <tr><td>코더 3천만→10억</td><td>Jensen</td><td>전망성, 확인 필요</td></tr>
+    </table>
+    <h4>⚠️ 확인 필요·불확실</h4>
+    <ul>
+      <li>다수 수치·제품 사양은 발화자 주장/진행자 인용 → 공식 자료 확인 필요.</li>
+      <li>"OpenClaw/NemoClaw/OpenShell/DLSS 5" 등 고유명사는 원문 그대로 반영, 공식 표기는 확정 어려움.</li>
+      <li>"AGI 이미 달성"은 젠슨 황 정의 기반 주장 — 일반적 AGI 합의로 해석 금지.</li>
+      <li>$10조 가치·$3조 매출·토큰 가격 전망은 미래 전망이며 검증된 사실 아님.</li>
+    </ul>
+    <h4>✅ 후속 액션</h4>
+    <ul>
+      <li>콘텐츠팀: "AI factory로 바뀐 컴퓨팅 단위"를 중심 메시지로 인사이트 카드 제작.</li>
+      <li>리서치팀: CUDA 설치기반·Vera Rubin 사양·전력망 유휴·방사선과 고용 통계 팩트체크.</li>
+      <li>전략팀: "추론 공유→믿음 형성→발표 시 100% buy-in" 리더십 사례 정리.</li>
+      <li>AI/제품팀: 에이전트 스케일링의 권한 분리(접근/실행/통신) 제품 요구사항 검토.</li>
+    </ul>
+  </div>
+
+  <!-- ===== Gemini ===== -->
+  <div class="subpanel" id="m-gemini">
+    <div class="modelhead">
+      <span class="pill">모델 Gemini 2.5 Pro</span><span class="pill">채널 API</span>
+      <span class="pill">실행 2026-06-04</span><span class="pill">출력 1.7K 토큰</span><span class="tag info">합계 32/35</span>
+    </div>
+    <div class="oneliner"><b>📌 한 줄 요약</b><br>
+      NVIDIA CEO 젠슨 황이 회사의 성공 전략(극한의 공동 설계, CUDA 생태계 구축), 리더십 철학(점진적 비전 공유),
+      그리고 AI 스케일링의 미래(컴퓨팅 파워 중심의 4단계 확장 법칙)에 대해 설명합니다.</div>
+    <h4>🎯 핵심 메시지</h4>
+    <ul>
+      <li><b>극한의 공동 설계</b>: 칩부터 데이터센터 전체를 최적화하는 시스템 엔지니어링이 핵심 경쟁력.</li>
+      <li><b>설치 기반이 곧 아키텍처</b>: CUDA를 모든 GeForce에 탑재한 베팅이 가장 강력한 해자가 됨.</li>
+      <li><b>점진적 비전 공유 리더십</b>: 수년에 걸쳐 직원·이사회·파트너의 신념을 형성("왜 이제야?").</li>
+      <li><b>AI 스케일링의 미래는 컴퓨팅</b>: 전처리·후처리·테스트시점·에이전트 4단계, 핵심 동력은 컴퓨팅 파워.</li>
+      <li><b>컴퓨터의 재정의(검색→생성)</b>: warehouse→factory 전환. AI '토큰'이 새 경제의 중심.</li>
+    </ul>
+    <h4>🗂️ 주제별 요약</h4>
+    <ul>
+      <li><b>리더십·전략 의사결정</b>: 직속 ~60명, 1:1 대신 문제 중심 그룹 토론. CUDA의 GeForce 탑재로 회사 가치 80억→15억 달러 급락도. 중대 발표 전 공감대 형성, GTC 활용.</li>
+      <li><b>AI 스케일링 전략</b>: 전처리→후처리→테스트시점→에이전트 4단계. 데이터 부족은 합성 데이터로, 추론 병목은 컴퓨팅으로. 핵심은 전력 효율(tokens per watt).</li>
+      <li><b>공급망·생태계 관리</b>: ASML·TSMC 등에 미래 수요·로드맵 공유해 선제 투자 유도. 과거 HBM 설득이 대표 사례. TSMC 경쟁력=제조 조율 능력 + 신뢰.</li>
+    </ul>
+    <h4>💬 주목할 인용</h4>
+    <ul>
+      <li class="quote">"My direct staff is 60 people. … We present a problem and all of us attack it." — Jensen Huang</li>
+      <li class="quote">"Install base defines an architecture. Not… Everything else is secondary, okay?" — Jensen Huang</li>
+      <li class="quote">"I like to announce these things, and I imagine that the employees are kind of saying, 'You know, Jensen, what took you so long?'" — Jensen Huang</li>
+      <li class="quote">"I think we've just reinvented the computer." — Jensen Huang</li>
+      <li class="quote">"Intelligence is a commodity… Humanity is not specified functionally. It's a much, much bigger word." — Jensen Huang</li>
+    </ul>
+    <h4>🔢 사실·수치 주장</h4>
+    <table>
+      <tr><th>주장</th><th>화자</th><th>확인</th></tr>
+      <tr><td>CUDA 탑재 후 시총 약 $8B → $1.5B 하락</td><td>Jensen</td><td>확인 필요</td></tr>
+      <tr><td>10년간 컴퓨팅 성능 100만 배 향상(무어 법칙 100배 대비)</td><td>Jensen</td><td>확인 필요</td></tr>
+      <tr><td>직속 보고자 약 60명 이상</td><td>Jensen</td><td>원문 기반 사실</td></tr>
+      <tr><td>전 세계 AI 연구자 약 50%가 중국인</td><td>Jensen</td><td>확인 필요</td></tr>
+      <tr><td>TSMC와 30년·수백억 달러 거래를 계약 없이</td><td>Jensen</td><td>확인 필요</td></tr>
+    </table>
+    <h4>⚠️ 확인 필요·불확실</h4>
+    <ul>
+      <li>2013년 Morris Chang의 TSMC CEO 제안 거절 — 본인이 사실 확인했으나 외부 검증 별도 필요.</li>
+      <li>"AGI 달성" 주장은 "$10억 가치 회사를 만들 수 있는 AI" 정의 하의 개인 의견 — 일반적 AGI 정의와 다를 수 있음.</li>
+    </ul>
+    <h4>✅ 후속 액션</h4>
+    <ul>
+      <li>리서치팀: '4단계 AI 스케일링 법칙' 심층 분석 및 시장 동향 리포트.</li>
+      <li>콘텐츠팀: 'CUDA의 GeForce 탑재' = 장기 비전 위한 단기 손실 감수 사례 콘텐츠 기획.</li>
+      <li>전략팀: 공급망 파트너 설득 전략(비전 공유→선제 투자)을 자사 파트너십에 적용.</li>
+    </ul>
+  </div>
+
+  <blockquote style="margin-top:22px">평가 포인트 — 세 모델 모두 <b>7개 섹션 형식을 준수</b>하고 불확실 수치(CUDA 직전 시총)에
+  '확인 필요'를 표기하며 "AGI 도달"을 화자 의견으로 분류했습니다(<b>환각 0건</b>). 차이는 <b>깊이</b>(GPT-5가 가장 상세),
+  <b>형식 정밀도</b>(Claude·Gemini가 더 정확), <b>효율</b>(Gemini 출력 토큰 최소)에서 갈렸습니다.
+  점수 산출 근거는 <b>① 모델 비교·선정</b> 탭 참조.</blockquote>
+</section>
+
 <!-- ============ RAW ============ -->
 <section id="raw">
   <h2>원본 결과 (재현용)</h2>
@@ -438,6 +671,14 @@
     t.classList.add('active');
     document.getElementById(t.dataset.t).classList.add('active');
     window.scrollTo({top:0,behavior:'smooth'});
+  }));
+  // 모델별 결과 하위 탭
+  document.querySelectorAll('.subtab').forEach(s=>s.addEventListener('click',()=>{
+    const wrap=s.closest('section');
+    wrap.querySelectorAll('.subtab').forEach(x=>x.classList.remove('active'));
+    wrap.querySelectorAll('.subpanel').forEach(p=>p.classList.remove('active'));
+    s.classList.add('active');
+    document.getElementById(s.dataset.s).classList.add('active');
   }));
 </script>
 </body>
