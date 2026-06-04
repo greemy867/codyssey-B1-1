@@ -9,7 +9,7 @@
 - **테스트 입력**: [`interview.md`](interview.md) — Lex Fridman ↔ Jensen Huang(NVIDIA CEO) 대담, **23,536단어 / 22개 주제 / 398턴**
 - **비교 모델 3종 (실제 호출)**: Claude Opus 4.8 · GPT-5 · Gemini 2.5 Pro
 - **최종 선정**: 🏆 **Claude Opus 4.8** (34/35)
-- **👉 가장 먼저 [`index.html`](index.html)을 브라우저로 열면** 3대 산출물 전체를 탭 UI로 한 번에 볼 수 있습니다.
+- **👉 가장 먼저 [`index.html`](https://w-dd918655.doit-now.ai/)을 브라우저로 열면** 3대 산출물 전체를 탭 UI로 한 번에 볼 수 있습니다.
 
 ---
 
