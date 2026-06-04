@@ -7,8 +7,8 @@
 
 - **업무 과업**: 긴 인터뷰 전문(녹취록)을 업무용 **구조화 브리프**로 요약
 - **테스트 입력**: [`interview.md`](interview.md) — Lex Fridman ↔ Jensen Huang(NVIDIA CEO) 대담, **23,536단어 / 22개 주제 / 398턴**
-- **비교 모델 3종 (실제 호출)**: Claude Opus 4.8 · GPT-5 · Gemini 2.5 Pro
-- **최종 선정**: 🏆 **Claude Opus 4.8** (34/35)
+- **비교 모델 4종 (실제 호출)**: Claude Opus 4.8 · GPT-5 · Gemini 2.5 Pro · DeepSeek V4 Pro
+- **최종 선정**: 🏆 **Claude Opus 4.8** (34/35) · GPT-5 32 · Gemini 32 · DeepSeek 31
 - **👉 가장 먼저 [`index.html`](https://w-dd918655.doit-now.ai/)을 브라우저로 열면** 3대 산출물 전체를 탭 UI로 한 번에 볼 수 있습니다.
 
 ---
@@ -19,7 +19,7 @@
 
 | # | 요구 산출물 | 파일 위치 | 핵심 내용 |
 |---|------------|-----------|-----------|
-| ① | **LLM 모델 비교·선정 보고서** | **[`docs/01_model_comparison.md`](docs/01_model_comparison.md)** | 동일 프롬프트를 3종 모델에 투입, 7개 평가축 점수표, 최종 선정 결론(근거), 재현성 기록 |
+| ① | **LLM 모델 비교·선정 보고서** | **[`docs/01_model_comparison.md`](docs/01_model_comparison.md)** | 동일 프롬프트를 4종 모델에 투입, 7개 평가축 점수표, 최종 선정 결론(근거), 재현성 기록 |
 | ② | **시스템 설계 문서** | **[`docs/02_system_design.md`](docs/02_system_design.md)** | 타겟 사용자·문제정의·페르소나·시스템/유저 프롬프트·입력 템플릿·Few-shot 3개·환각 검증 설계·v1→v2 개선·**최종 프롬프트 전문** |
 | ③ | **실행 로그 (대화 로그)** | **[`docs/03_conversation_log.md`](docs/03_conversation_log.md)** (편집·검증본)<br>**[`logs/raw_conversation.md`](logs/raw_conversation.md)** (원본 전문, 재현용) | 12턴 대화(조건 변경 + 뒤늦은 정보 포함), 문제 발생 지점(환각/문맥), 수정 결과 요약 |
 
@@ -42,11 +42,12 @@ codyssey-B1-1/
 │  ├─ raw_claude.md                  Claude Opus 4.8 요약 결과 전문
 │  ├─ raw_gpt5.md                    GPT-5 요약 결과 전문
 │  ├─ raw_gemini.md                  Gemini 2.5 Pro 요약 결과 전문
+│  ├─ raw_deepseek.md                DeepSeek V4 Pro 요약 결과 전문
 │  └─ raw_conversation.md            ③ 10턴+ 대화 원본 전문
 │
 ├─ prompts/                          ── 비교에 사용한 입력
 │  ├─ _prompt_header.md              시스템 프롬프트 v2 + 과업 지시 (헤더)
-│  └─ comparison_prompt.md           헤더 + 인터뷰 전문 = 3종 모델에 100% 동일 투입한 입력
+│  └─ comparison_prompt.md           헤더 + 인터뷰 전문 = 4종 모델에 100% 동일 투입한 입력
 │
 ├─ assets/
 │  └─ ai_factory.png                 🎨 보너스 2 — 생성 이미지 (1024×1024)
@@ -66,7 +67,7 @@ codyssey-B1-1/
 #### 4-1. 모델 비교 및 선정 (최소 3종) → `docs/01_model_comparison.md`
 | 세부 요구 | 충족 | 위치 |
 |-----------|:---:|------|
-| 서로 다른 3종 이상 LLM에 동일 과업 수행 | ✅ | Claude Opus 4.8 · GPT-5 · Gemini 2.5 Pro (실제 호출), 동일 입력 `prompts/comparison_prompt.md` |
+| 서로 다른 3종 이상 LLM에 동일 과업 수행 | ✅ | **4종** Claude Opus 4.8 · GPT-5 · Gemini 2.5 Pro · DeepSeek V4 Pro (실제 호출), 동일 입력 `prompts/comparison_prompt.md` |
 | 비교 대상 모델명 | ✅ | `docs/01` 2장 표 |
 | 사용 환경 (웹/앱/API) | ✅ | Claude=API · GPT-5=CLI · Gemini=API → `docs/01` 2장 |
 | 평가 축 최소 4개 + 모델별 점수(1~5) + 근거 | ✅ | **7개 축** 점수표 + 모델별 총평 → `docs/01` 3~5장 |
@@ -140,22 +141,24 @@ codyssey-B1-1/
 
 ## 🔁 재현 방법 (How to Reproduce)
 
-3종 모델에 **완전히 동일한 입력**(`prompts/comparison_prompt.md`)을 투입했습니다.
+4종 모델에 **완전히 동일한 입력**(`prompts/comparison_prompt.md`)을 투입했습니다.
 
 | 모델 | 채널 | 호출 방법 |
 |------|------|-----------|
 | Claude Opus 4.8 | API (Claude Code) | 네이티브 세션에서 동일 프롬프트 적용 |
 | GPT-5 | CLI | `omc ask codex -p "$(cat prompts/comparison_prompt.md)"` |
 | Gemini 2.5 Pro | API | Google Generative Language `v1beta` `generateContent` (gemini-2.5-pro, temp 0.4) |
+| DeepSeek V4 Pro | API | `api.deepseek.com/chat/completions` (deepseek-v4-pro, thinking=high, OpenAI 호환) |
 
-> 결과 원문은 `logs/raw_claude.md`, `logs/raw_gpt5.md`, `logs/raw_gemini.md`에 그대로 보존.
+> 결과 원문은 `logs/raw_claude.md`, `logs/raw_gpt5.md`, `logs/raw_gemini.md`, `logs/raw_deepseek.md`에 그대로 보존.
 
 ---
 
 ## 📊 핵심 결과 요약
 
-- **모델 비교 점수**: Claude **34** / GPT-5 **32** / Gemini **32** (각 /35)
-- **환각**: 3종 **모두 0건** — 불확실 수치는 전부 '확인 필요'로 표기, "AGI 도달"을 화자 의견으로 분류
+- **모델 비교 점수**: Claude **34** / GPT-5 **32** / Gemini **32** / DeepSeek **31** (각 /35)
+- **환각**: 4종 **모두 0건** — 불확실 수치는 전부 '확인 필요'/'주장된 수치'로 표기, "AGI 도달"을 화자 의견으로 분류
+- **DeepSeek 특이점**: reasoning 기반으로 깊이는 우수하나 인용을 한국어로 의역해 "원문 그대로" 규칙 위반(인용 정확성 감점)
 - **10턴+ 대화**: 환각 검증 2건 Pass, 문맥 유지 Pass (조건 4회 누적 변경에도 일관성 유지)
 
 ## 🎓 학습 목표 연계

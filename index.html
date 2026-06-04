@@ -106,13 +106,13 @@
     <span class="badge-task">업무 자동화 프롬프트 패키지 · B1-1</span>
     <h1>인터뷰 전문 요약 봇 🎙️→📋</h1>
     <p>긴 인터뷰 녹취록(Lex Fridman ↔ Jensen Huang, 23,536단어)을 업무용 구조화 브리프로 요약하는
-       프롬프트 시스템. LLM 3종을 동일 과업에 투입해 비교·선정하고, 페르소나·시스템 프롬프트·Few-shot·
+       프롬프트 시스템. LLM 4종을 동일 과업에 투입해 비교·선정하고, 페르소나·시스템 프롬프트·Few-shot·
        단계적 추론·환각 검증·10턴+ 대화를 설계했습니다.</p>
     <div class="meta-row">
       <span>📅 작성일 <b>2026-06-04</b></span>
-      <span>🤖 비교 모델 <b>Claude Opus 4.8 · GPT-5 · Gemini 2.5 Pro</b></span>
+      <span>🤖 비교 모델 <b>Claude Opus 4.8 · GPT-5 · Gemini 2.5 Pro · DeepSeek V4 Pro</b></span>
       <span>🏆 선정 <b>Claude Opus 4.8</b></span>
-      <span>✅ 환각 <b>3종 모두 0건</b></span>
+      <span>✅ 환각 <b>4종 모두 0건</b></span>
     </div>
   </div>
 </header>
@@ -134,11 +134,11 @@
 <section id="overview" class="active">
   <h2>📦 패키지 개요</h2>
   <div class="grid c3">
-    <div class="stat"><div class="n">3</div><div class="l">실제 호출한 LLM</div></div>
+    <div class="stat"><div class="n">4</div><div class="l">실제 호출한 LLM</div></div>
     <div class="stat"><div class="n">7</div><div class="l">평가 축 (1~5점)</div></div>
     <div class="stat"><div class="n">12</div><div class="l">실행 대화 턴 수</div></div>
     <div class="stat"><div class="n">5</div><div class="l">환각 검증 문항</div></div>
-    <div class="stat"><div class="n">0</div><div class="l">환각 발생 (3종 전부)</div></div>
+    <div class="stat"><div class="n">0</div><div class="l">환각 발생 (4종 전부)</div></div>
     <div class="stat"><div class="n">23.5K</div><div class="l">요약 대상 단어 수</div></div>
   </div>
 
@@ -146,8 +146,8 @@
   <div class="grid c3">
     <div class="card">
       <h4>① 모델 비교·선정 보고서</h4>
-      <p class="small">동일 프롬프트를 3종에 투입 → 7개 축 점수표 + 선정 근거. 재현성 기록(모델·요금제·채널·날짜·설정) 포함.</p>
-      <span class="tag info">Claude 34 · GPT-5 32 · Gemini 32</span>
+      <p class="small">동일 프롬프트를 4종에 투입 → 7개 축 점수표 + 선정 근거. 재현성 기록(모델·요금제·채널·날짜·설정) 포함.</p>
+      <span class="tag info">Claude 34 · GPT-5 32 · Gemini 32 · DeepSeek 31</span>
     </div>
     <div class="card">
       <h4>② 시스템 설계 문서</h4>
@@ -196,9 +196,9 @@
     │&nbsp;&nbsp;├─ 02_system_design.md<br>
     │&nbsp;&nbsp;└─ 03_conversation_log.md<br>
     ├─ logs/ &nbsp;<span class="small">(원본 전문 — 재현용)</span><br>
-    │&nbsp;&nbsp;├─ raw_claude.md · raw_gpt5.md · raw_gemini.md<br>
+    │&nbsp;&nbsp;├─ raw_claude.md · raw_gpt5.md · raw_gemini.md · raw_deepseek.md<br>
     │&nbsp;&nbsp;└─ raw_conversation.md<br>
-    ├─ prompts/comparison_prompt.md &nbsp;<span class="small">(3종 동일 입력)</span><br>
+    ├─ prompts/comparison_prompt.md &nbsp;<span class="small">(4종 동일 입력)</span><br>
     ├─ assets/ai_factory.png &nbsp;<span class="small">(보너스2 — 생성 이미지)</span><br>
     └─ .claude/skills/interview-summarizer/ &nbsp;<span class="small">(보너스1 — 재사용 스킬)</span>
   </div>
@@ -208,7 +208,7 @@
 <section id="compare">
   <h2>① 모델 비교·선정 보고서</h2>
   <p class="small">동일 입력(<code>prompts/comparison_prompt.md</code> = 시스템 프롬프트 v2 + 인터뷰 전문)을
-  3종 모델에 100% 동일하게 투입했습니다.</p>
+  <b>4종 모델</b>에 100% 동일하게 투입했습니다.</p>
 
   <h3>사용 환경 (재현성 기록)</h3>
   <table>
@@ -216,23 +216,25 @@
     <tr><td><b>Claude Opus 4.8</b><br><span class="small">claude-opus-4-8 (1M)</span></td><td>유료</td><td>API (Claude Code)</td><td>2026-06-04</td><td>기본값</td></tr>
     <tr><td><b>GPT-5</b><br><span class="small">codex 라우팅</span></td><td>유료</td><td>CLI (omc ask codex)</td><td>2026-06-04</td><td>기본값 · ~43K 토큰</td></tr>
     <tr><td><b>Gemini 2.5 Pro</b><br><span class="small">gemini-2.5-pro</span></td><td>유료(선불)</td><td>API (v1beta)</td><td>2026-06-04</td><td>temp 0.4 · prompt 35.5K/out 1.7K</td></tr>
+    <tr><td><b>DeepSeek V4 Pro</b><br><span class="small">deepseek-v4-pro</span></td><td>유료</td><td>API (OpenAI 호환)</td><td>2026-06-04</td><td>thinking=high · prompt 34.3K/out 4.2K</td></tr>
   </table>
   <blockquote>Gemini는 최초 호출 시 선불 크레딧 소진으로 차단 → 크레딧 충전 후 정상 호출. 무료 등급은 긴 컨텍스트·요청 한도 제약 가능.</blockquote>
 
   <h3>평가 축별 점수표</h3>
   <table>
-    <tr><th>평가 축</th><th class="center">Claude 4.8</th><th class="center">GPT-5</th><th class="center">Gemini 2.5 Pro</th></tr>
-    <tr><td>1. 요약 정확성 (원문 충실·환각 없음)</td><td class="center"><span class="sc v5">5</span></td><td class="center"><span class="sc v5">5</span></td><td class="center"><span class="sc v5">5</span></td></tr>
-    <tr><td>2. 핵심 포착력</td><td class="center"><span class="sc v4">4</span></td><td class="center"><span class="sc v5">5</span></td><td class="center"><span class="sc v4">4</span></td></tr>
-    <tr><td>3. 형식/템플릿 준수</td><td class="center"><span class="sc v5">5</span></td><td class="center"><span class="sc v4">4</span></td><td class="center"><span class="sc v5">5</span></td></tr>
-    <tr><td>4. 한국어 자연스러움</td><td class="center"><span class="sc v5">5</span></td><td class="center"><span class="sc v5">5</span></td><td class="center"><span class="sc v5">5</span></td></tr>
-    <tr><td>5. 인용 정확성</td><td class="center"><span class="sc v5">5</span></td><td class="center"><span class="sc v5">5</span></td><td class="center"><span class="sc v5">5</span></td></tr>
-    <tr><td>6. 긴 문맥 처리</td><td class="center"><span class="sc v5">5</span></td><td class="center"><span class="sc v5">5</span></td><td class="center"><span class="sc v4">4</span></td></tr>
-    <tr><td>7. 속도·안정성·비용</td><td class="center"><span class="sc v5">5</span></td><td class="center"><span class="sc v3">3</span></td><td class="center"><span class="sc v4">4</span></td></tr>
+    <tr><th>평가 축</th><th class="center">Claude 4.8</th><th class="center">GPT-5</th><th class="center">Gemini 2.5 Pro</th><th class="center">DeepSeek V4 Pro</th></tr>
+    <tr><td>1. 요약 정확성 (원문 충실·환각 없음)</td><td class="center"><span class="sc v5">5</span></td><td class="center"><span class="sc v5">5</span></td><td class="center"><span class="sc v5">5</span></td><td class="center"><span class="sc v5">5</span></td></tr>
+    <tr><td>2. 핵심 포착력</td><td class="center"><span class="sc v4">4</span></td><td class="center"><span class="sc v5">5</span></td><td class="center"><span class="sc v4">4</span></td><td class="center"><span class="sc v5">5</span></td></tr>
+    <tr><td>3. 형식/템플릿 준수</td><td class="center"><span class="sc v5">5</span></td><td class="center"><span class="sc v4">4</span></td><td class="center"><span class="sc v5">5</span></td><td class="center"><span class="sc v5">5</span></td></tr>
+    <tr><td>4. 한국어 자연스러움</td><td class="center"><span class="sc v5">5</span></td><td class="center"><span class="sc v5">5</span></td><td class="center"><span class="sc v5">5</span></td><td class="center"><span class="sc v5">5</span></td></tr>
+    <tr><td>5. 인용 정확성</td><td class="center"><span class="sc v5">5</span></td><td class="center"><span class="sc v5">5</span></td><td class="center"><span class="sc v5">5</span></td><td class="center"><span class="sc v3">3</span></td></tr>
+    <tr><td>6. 긴 문맥 처리</td><td class="center"><span class="sc v5">5</span></td><td class="center"><span class="sc v5">5</span></td><td class="center"><span class="sc v4">4</span></td><td class="center"><span class="sc v5">5</span></td></tr>
+    <tr><td>7. 속도·안정성·비용</td><td class="center"><span class="sc v5">5</span></td><td class="center"><span class="sc v3">3</span></td><td class="center"><span class="sc v4">4</span></td><td class="center"><span class="sc v3">3</span></td></tr>
     <tr style="background:var(--panel2)"><td class="total">합계 (/35)</td>
       <td class="center total"><span class="medal">🥇</span> 34</td>
       <td class="center total"><span class="medal">🥈</span> 32</td>
-      <td class="center total"><span class="medal">🥈</span> 32</td></tr>
+      <td class="center total"><span class="medal">🥈</span> 32</td>
+      <td class="center total"><span class="medal">4️⃣</span> 31</td></tr>
   </table>
 
   <h3>모델별 총평</h3>
@@ -252,16 +254,21 @@
       <p class="small">형식·한국어·효율 우수, 출력 1.7K 토큰으로 가장 경제적. 불확실 수치 '확인 필요' 표기.
       <b>약점:</b> 후반부 주제(게임/의식/죽음) 포착이 얕음.</p>
     </div>
+    <div class="card">
+      <h4>4️⃣ DeepSeek V4 Pro — 31</h4>
+      <p class="small">reasoning 모델로 주제별 요약이 깊고 짜임새 있음. 환각 억제 양호(시총=주장된 수치, AGI=의견).
+      <b>약점:</b> 인용을 한국어로 <b>의역</b>해 "원문 그대로" 규칙 위반(인용 정확성 3), 응답 가장 느림.</p>
+    </div>
   </div>
 
   <h3>🏆 최종 선정 결론 — Claude Opus 4.8</h3>
   <div class="card">
     <ol style="padding-left:20px;margin:0">
       <li>핵심 축인 <b>형식 준수·환각 억제·반복 효율</b>에서 Claude가 가장 균형적(34/35). 화자조차 불확실하게 말한 수치를 ⚠️로 분리해 환각을 능동 차단.</li>
-      <li>GPT-5는 깊이는 최고였으나 느리고 비쌈, Gemini는 효율적이나 후반부 주제가 얕음.</li>
-      <li>세 모델 <b>환각은 모두 0건</b>(불확실 값은 전부 '확인 필요')이라 정확성은 동급 → 형식 일관성·속도·비용에서 Claude가 우위.</li>
+      <li>GPT-5는 깊이는 최고였으나 느리고 비쌈, Gemini는 효율적이나 후반부 주제가 얕음, DeepSeek는 깊이는 강하나 인용을 의역해 형식 규칙을 어기고 가장 느림.</li>
+      <li><b>4종 모두 환각은 0건</b>(불확실 값은 전부 '확인 필요'/'주장된 수치')이라 정확성은 동급 → 형식·인용 정확성·속도·비용에서 Claude가 우위.</li>
     </ol>
-    <blockquote style="margin-top:14px"><b>운영 권고:</b> 기본 요약 = Claude · 심층 리서치 = GPT-5 · 빠르고 저렴한 대량 처리 = Gemini 2.5 Pro 로 역할 분담.</blockquote>
+    <blockquote style="margin-top:14px"><b>운영 권고:</b> 기본 요약 = Claude · 심층 리서치 = GPT-5/DeepSeek · 빠르고 저렴한 대량 처리 = Gemini 2.5 Pro 로 역할 분담.</blockquote>
   </div>
 
   <h3>Codex의 반론 — Claude 1위 결론 점검</h3>
@@ -399,7 +406,7 @@
 
 <!-- ============ RESULTS (모델별 전체 결과) ============ -->
 <section id="results">
-  <h2>🔬 모델별 결과 — 같은 과업, 3종 모델 전체 출력</h2>
+  <h2>🔬 모델별 결과 — 같은 과업, 4종 모델 전체 출력</h2>
   <p class="small"><b>과업:</b> 인터뷰 전문(Lex Fridman ↔ Jensen Huang) → 업무용 구조화 브리프 요약 ·
   <b>입력:</b> 세 모델에 100% 동일(<code>prompts/comparison_prompt.md</code>). 아래 탭에서 각 모델이 실제로 생성한
   <b>전체 결과</b>를 직접 읽고 비교할 수 있습니다. (원본: <code>logs/raw_*.md</code>)</p>
@@ -408,6 +415,7 @@
     <button class="subtab active" data-s="m-claude">🥇 Claude Opus 4.8 · 34</button>
     <button class="subtab" data-s="m-gpt5">🥈 GPT-5 · 32</button>
     <button class="subtab" data-s="m-gemini">🥈 Gemini 2.5 Pro · 32</button>
+    <button class="subtab" data-s="m-deepseek">4️⃣ DeepSeek V4 Pro · 31</button>
   </div>
 
   <!-- ===== Claude ===== -->
@@ -612,16 +620,72 @@
     </ul>
   </div>
 
-  <blockquote style="margin-top:22px">평가 포인트 — 세 모델 모두 <b>7개 섹션 형식을 준수</b>하고 불확실 수치(CUDA 직전 시총)에
-  '확인 필요'를 표기하며 "AGI 도달"을 화자 의견으로 분류했습니다(<b>환각 0건</b>). 차이는 <b>깊이</b>(GPT-5가 가장 상세),
-  <b>형식 정밀도</b>(Claude·Gemini가 더 정확), <b>효율</b>(Gemini 출력 토큰 최소)에서 갈렸습니다.
+  <!-- ===== DeepSeek ===== -->
+  <div class="subpanel" id="m-deepseek">
+    <div class="modelhead">
+      <span class="pill">모델 DeepSeek V4 Pro</span><span class="pill">채널 API (reasoning)</span>
+      <span class="pill">실행 2026-06-04</span><span class="pill">출력 4.2K + 추론 토큰</span><span class="tag info">합계 31/35</span>
+    </div>
+    <div class="oneliner"><b>📌 한 줄 요약</b><br>
+      젠슨 황은 AI 컴퓨팅이 단일 칩을 넘어 랙·팟·데이터센터 단위의 'AI 팩토리'로 진화하고 있으며, 이 변화 속
+      엔비디아의 핵심 경쟁력은 쿠다(CUDA) 설치 기반과 극한 공동 설계 문화에서 비롯된다고 강조하였다.</div>
+    <h4>🎯 핵심 메시지</h4>
+    <ul>
+      <li><b>극한 공동 설계는 선택이 아닌 필수</b> — 시스템 전반(CPU·GPU·네트워킹·냉각)을 최적화. 60명+ 직속 스태프가 주제 불문 함께 문제 해결, '1:1 미팅' 없음.</li>
+      <li><b>설치 기반과 속도가 해자</b> — CUDA 방대한 설치 기반 + 연 1회 불가능해 보이는 시스템 출시 속도 → 개발자가 CUDA를 우선 타겟팅.</li>
+      <li><b>AI 스케일링은 4가지 법칙으로 진화</b> — 사전학습·사후학습·테스트타임·에이전틱. 추론은 '생각하는 과정'이라 사전학습보다 훨씬 많은 컴퓨팅 필요.</li>
+      <li><b>'스피드 오브 라이트(물리 한계)' 사고</b> — 모든 문제를 물리 한계에 비추어 검증. 점진 개선이 아닌 근본 원리 분해 후 최적 상태를 먼저 정의.</li>
+      <li><b>지능의 상품화와 인간성의 가치</b> — 지능은 상품이 되며, 진짜 경쟁력은 회복탄력성·인내·의지 같은 인간성. 모두가 AI 도구로 자기 능력을 혁신 가능.</li>
+    </ul>
+    <h4>🗂️ 주제별 요약</h4>
+    <ul>
+      <li><b>극한 공동 설계·랙 스케일</b>: 무어 법칙·데나드 스케일링 둔화 → 알고리즘·파이프라인·모델 샤딩 분산 처리 필수. MoE 대비 NVLink 8→72 확장.</li>
+      <li><b>리더십·전략 의사결정</b>: 2~3년 전부터 신념을 전파해 발표 시 "이제야?" 분위기. CUDA·지포스 결정으로 시총 60~80억→15억 달러 위기. 조직도는 제품 아키텍처를 반영.</li>
+      <li><b>AI 스케일링 법칙·장애</b>: 4단계 법칙. 데이터 부족은 합성 데이터로, 한계는 컴퓨트로. OpenClaw='토큰의 아이폰'. 전력은 유휴분 활용·우아한 성능 저하로 완화.</li>
+      <li><b>공급망 관리</b>: 10년간 컴퓨팅 100만 배 향상. HBM·LPDDR 투자 설득→메모리사 45년 최대 실적. TSMC와 30년 무계약 신뢰.</li>
+      <li><b>미래 가치·AGI</b>: 컴퓨터=창고→공장 재정의. AGI를 '10억 달러 기업 설립 수준'으로 보면 지금도 가능한 시대.</li>
+    </ul>
+    <h4>💬 주목할 인용 <span class="tag warn">⚠️ 한국어로 의역됨 (원문 그대로 아님 — 인용 정확성 감점 사유)</span></h4>
+    <ul>
+      <li class="quote">"(AI 컴퓨팅에서) 우리가 근본적으로 바꾼 것은 컴퓨팅 방식입니다. … 컴퓨터는 더 이상 창고가 아닌, 공장입니다." — 젠슨 황</li>
+      <li class="quote">"제일 경계하는 것은 '이전에는 이렇게 했었는데'라는 말입니다. … 74일 걸리던 일을 6일로 단축시키는 게 가능하다는 걸 알게 됩니다." — 젠슨 황</li>
+      <li class="quote">"중요한 것은 인간성, 인격입니다. 앞으로 지능은 상품화될 것입니다." — 젠슨 황</li>
+      <li class="quote">"AI를 사용할 줄 아는 전문가를 고용할 것입니다. … AI는 그 직업의 가치를 극적으로 높여줄 것입니다." — 젠슨 황</li>
+    </ul>
+    <h4>🔢 사실·수치 주장</h4>
+    <table>
+      <tr><th>주장</th><th>화자</th><th>확인</th></tr>
+      <tr><td>직속 보고 스태프 60명 이상, 대부분 공학 전문가</td><td>Jensen</td><td>원문에 명시됨</td></tr>
+      <tr><td>CUDA 지포스 탑재로 원가 50%↑, 시총 약 $1.5B로 하락</td><td>Jensen</td><td>주장된 수치</td></tr>
+      <tr><td>10년간 컴퓨팅 성능 100만 배 향상(무어 법칙 100배 대비)</td><td>Jensen</td><td>주장된 수치</td></tr>
+      <tr><td>Vera Rubin 랙 ~130만 부품·200 공급사, 팟당 1,100+ Rubin GPU</td><td>Jensen</td><td>원문에 명시됨</td></tr>
+      <tr><td>전 세계 AI 연구자 50%가 중국계</td><td>Jensen</td><td>주장된 통계</td></tr>
+      <tr><td>토큰 100만 개당 $1,000 시장 등장은 시간문제</td><td>Jensen</td><td>시장 예측 주장</td></tr>
+    </table>
+    <h4>⚠️ 확인 필요·불확실</h4>
+    <ul>
+      <li>2013년 Morris Chang의 TSMC CEO 제안 일화 — 구두 인정했으나 시점·비공식성은 외부 검증 필요.</li>
+      <li>컴퓨터 비전 초인간 성능 시점을 "2019, 20, 어쩌면 2020"으로 다소 불명확하게 언급.</li>
+      <li>"OpenClaw가 수십억 달러 기업이 될 수 있다"는 현재 기술에 대한 극단적 시장 가정 기반 주장.</li>
+    </ul>
+    <h4>✅ 후속 액션</h4>
+    <ul>
+      <li>전력 활용 모델(성능 저하 수용 계약·유휴 자원) — CSP 계약 조건·유틸리티 공급 가능성 팩트체크.</li>
+      <li>오픈소스 전략(Nemotron 3) vs 메타 Llama 비교, 생태계 수직계열화 분석.</li>
+      <li>'토큰 100만 개당 $1,000' 도래 시점·토큰 시장 가격 분기점 추적 리포트.</li>
+    </ul>
+  </div>
+
+  <blockquote style="margin-top:22px">평가 포인트 — <b>4종 모두 7개 섹션 형식을 준수</b>하고 불확실 수치(CUDA 직전 시총)에
+  '확인 필요'/'주장된 수치'를 표기하며 "AGI 도달"을 화자 의견으로 분류했습니다(<b>환각 0건</b>). 차이는 <b>깊이</b>(GPT-5·DeepSeek가 가장 상세),
+  <b>인용 정확성</b>(DeepSeek는 인용을 한국어로 의역해 감점), <b>효율</b>(Gemini 출력 토큰 최소, DeepSeek가 가장 느림)에서 갈렸습니다.
   점수 산출 근거는 <b>① 모델 비교·선정</b> 탭 참조.</blockquote>
 </section>
 
 <!-- ============ RAW ============ -->
 <section id="raw">
   <h2>원본 결과 (재현용)</h2>
-  <p class="small">3종 모델의 요약 원문과 대화 전문은 별도 파일로 보존했습니다. 아래는 핵심 발췌이며,
+  <p class="small">4종 모델의 요약 원문과 대화 전문은 별도 파일로 보존했습니다. 아래는 핵심 발췌이며,
   전체는 <code>logs/</code> 폴더에서 확인할 수 있습니다.</p>
 
   <h3>모델별 "한 줄 요약" 비교</h3>
@@ -630,9 +694,10 @@
     <tr><td><b>Claude 4.8</b></td><td class="small">extreme co-design, CUDA install base 해자, 미래를 미리 manifest하는 리더십으로 NVIDIA를 설명하고, 컴퓨팅이 '검색 창고'에서 '토큰 공장'으로 이동했다고 진단.</td></tr>
     <tr><td><b>GPT-5</b></td><td class="small">핵심 경쟁력을 CUDA 설치 기반·생태계, 극단적 공동설계, "추론하고 설득해 실현하는" 리더십으로 설명하며, 스케일링 병목은 컴퓨트·전력·공급망 실행력으로 귀결.</td></tr>
     <tr><td><b>Gemini 2.5 Pro</b></td><td class="small">성공 전략(극한 공동설계·CUDA 생태계), 리더십 철학(점진적 비전 공유), AI 스케일링의 미래(컴퓨팅 중심 4단계 확장 법칙)를 설명.</td></tr>
+    <tr><td><b>DeepSeek V4 Pro</b></td><td class="small">AI 컴퓨팅이 칩→랙→데이터센터 'AI 팩토리'로 진화하며, 엔비디아 경쟁력은 CUDA 설치 기반과 극한 공동 설계 문화에서 비롯된다고 강조.</td></tr>
   </table>
 
-  <h3>공통 포착 — 핵심 사실·수치 (3종 모두 일치)</h3>
+  <h3>공통 포착 — 핵심 사실·수치 (4종 모두 일치)</h3>
   <div>
     <span class="pill">직속 스태프 60명</span>
     <span class="pill">CUDA 원가 +50% · 마진 35%</span>
@@ -643,13 +708,14 @@
     <span class="pill">4단계 스케일링 법칙</span>
     <span class="pill">"AGI 도달" = 화자 의견</span>
   </div>
-  <blockquote>3종 모두 불확실 수치(CUDA 직전 시총)에 '확인 필요'를 붙이고, "AGI 달성"을 사실이 아닌 화자 의견으로 분류 → <b>환각 0건</b>.</blockquote>
+  <blockquote>4종 모두 불확실 수치(CUDA 직전 시총)에 '확인 필요'/'주장된 수치'를 붙이고, "AGI 달성"을 사실이 아닌 화자 의견으로 분류 → <b>환각 0건</b>.</blockquote>
 
   <h3>원본 파일</h3>
   <ul>
     <li><a href="logs/raw_claude.md"><code>logs/raw_claude.md</code></a> — Claude Opus 4.8 요약 전문</li>
     <li><a href="logs/raw_gpt5.md"><code>logs/raw_gpt5.md</code></a> — GPT-5 요약 전문</li>
     <li><a href="logs/raw_gemini.md"><code>logs/raw_gemini.md</code></a> — Gemini 2.5 Pro 요약 전문</li>
+    <li><a href="logs/raw_deepseek.md"><code>logs/raw_deepseek.md</code></a> — DeepSeek V4 Pro 요약 전문</li>
     <li><a href="logs/raw_conversation.md"><code>logs/raw_conversation.md</code></a> — 12턴 대화 전문</li>
     <li><a href="docs/01_model_comparison.md"><code>docs/01_model_comparison.md</code></a> · <a href="docs/02_system_design.md"><code>02_system_design.md</code></a> · <a href="docs/03_conversation_log.md"><code>03_conversation_log.md</code></a></li>
   </ul>
@@ -659,7 +725,7 @@
 
 <footer>
   Codyssey B1-1 · 인터뷰 요약 봇 프롬프트 패키지 · 2026-06-04 ·
-  비교 모델 Claude Opus 4.8 / GPT-5 / Gemini 2.5 Pro
+  비교 모델 Claude Opus 4.8 / GPT-5 / Gemini 2.5 Pro / DeepSeek V4 Pro
 </footer>
 
 <script>
