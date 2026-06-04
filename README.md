@@ -50,7 +50,7 @@ codyssey-B1-1/
 │  └─ comparison_prompt.md           헤더 + 인터뷰 전문 = 4종 모델에 100% 동일 투입한 입력
 │
 ├─ assets/
-│  └─ ai_factory.png                 🎨 보너스 2 — 생성 이미지 (1024×1024)
+│  └─ 인터뷰_요약_모델_설계_가이드.png   🎨 보너스 2 — 생성 이미지 (1024×1024)
 │
 └─ .claude/skills/
    └─ interview-summarizer/SKILL.md  🤖 보너스 1 — 최종 프롬프트의 재사용 스킬화
@@ -135,7 +135,7 @@ codyssey-B1-1/
 
 ### 5. 보너스 (선택)
 - [x] **보너스 1** — 최종 프롬프트를 재사용 스킬로 배포 → `.claude/skills/interview-summarizer/SKILL.md`
-- [x] **보너스 2** — 요약 테마 기반 시각자료 1장 생성 → `assets/ai_factory.png`
+- [x] **보너스 2** — 요약 테마 기반 시각자료 1장 생성 → `assets/인터뷰_요약_모델_설계_가이드.png`
 
 ---
 
