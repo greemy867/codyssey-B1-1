@@ -109,13 +109,12 @@
   <div class="hero-wrap">
     <span class="badge-task">업무 자동화 프롬프트 패키지 · B1-1</span>
     <h1>인터뷰 전문 요약 봇 🎙️→📋</h1>
-    <p>긴 인터뷰 녹취록(Lex Fridman ↔ Jensen Huang, 23,536단어)을 업무용 구조화 브리프로 요약하는
-       프롬프트 시스템. LLM 4종을 동일 과업에 투입해 비교·선정하고, 페르소나·시스템 프롬프트·Few-shot·
-       단계적 추론·환각 검증·10턴+ 대화를 설계했습니다.</p>
+    <p>긴 인터뷰 녹취록(Lex Fridman ↔ Jensen Huang, 23,536단어)을 업무용 구조화 요약으로 만드는 프롬프트 시스템.
+       LLM 4종 비교·선정, 페르소나·시스템/유저 프롬프트·Few-shot·v1→v2 개선·환각 검증·10턴+ 대화 설계 포함.</p>
     <div class="meta-row">
       <span>📅 작성일 <b>2026-06-04</b></span>
       <span>🤖 비교 모델 <b>Claude Opus 4.8 · GPT-5 · Gemini 2.5 Pro · DeepSeek V4 Pro</b></span>
-      <span>🏆 선정 <b>Claude Opus 4.8</b></span>
+      <span>🏆 최종 선택 <b>ChatGPT (GPT-5)</b></span>
       <span>✅ 환각 <b>4종 모두 0건</b></span>
     </div>
   </div>
@@ -161,7 +160,7 @@
     </div>
     <div class="card">
       <h4>③ 실행 로그 (10턴+)</h4>
-      <p class="small">조건 변경 + 뒤늦은 정보 포함 12턴 대화. 환각 2건 Pass, 문맥 유지 Pass.</p>
+      <p class="small">조건 변경 + 뒤늦은 정보 포함 12턴 대화. 환각 검증 Pass · 문맥 유지 Pass.</p>
       <span class="tag pass">환각 Pass</span><span class="tag pass">문맥 Pass</span>
     </div>
   </div>
@@ -169,7 +168,7 @@
   <h3>과업 정의</h3>
   <table>
     <tr><th width="160">항목</th><th>내용</th></tr>
-    <tr><td>업무 과업</td><td>인터뷰 전문 → 업무용 구조화 브리프 요약</td></tr>
+    <tr><td>업무 과업</td><td>인터뷰 전문 → 업무용 구조화 요약</td></tr>
     <tr><td>타겟 사용자</td><td>콘텐츠/리서치팀, 인터뷰를 업무 자료로 재활용하려는 실무자</td></tr>
     <tr><td>입력 데이터</td><td>인터뷰 전문 텍스트 (<code>interview.md</code>, 화자 구분 포함)</td></tr>
     <tr><td>출력 규격</td><td>7개 고정 섹션: 한 줄 요약 / 핵심 메시지 / 주제별 / 인용 / 사실·수치 / 확인필요 / 후속액션</td></tr>
@@ -209,6 +208,59 @@
   </table>
   <blockquote>Gemini는 최초 호출 시 선불 크레딧 소진으로 차단 → 크레딧 충전 후 정상 호출. 무료 등급은 긴 컨텍스트·요청 한도 제약 가능.</blockquote>
 
+  <h3>평가 축 7개 — 무엇을, 왜 보는가</h3>
+  <p class="small">"인터뷰 요약 봇"이라는 과업 특성에서 도출한 7개 축입니다. 각 축이 <b>무엇을 측정하고 왜 이 과업에 중요한지</b>를 먼저 정의한 뒤 채점했습니다.</p>
+  <table>
+    <tr><th width="150">평가 축</th><th>무엇을 보는가 (측정 대상)</th><th>왜 이 과업에 중요한가</th></tr>
+    <tr><td><b>1. 요약 정확성</b><br><span class="small">원문 충실·환각 없음</span></td><td>원문에 없는 사실·수치를 지어내지 않는가. 원문 내용을 왜곡 없이 옮기는가.</td><td>요약 봇의 <b>존재 이유</b>. 환각 1건이면 업무 자료로서 신뢰가 무너짐 → 최우선 축.</td></tr>
+    <tr><td><b>2. 핵심 포착력</b></td><td>21개 주제 전반에서 중요한 포인트를 누락 없이 잡는가. 지엽적 내용에 매몰되지 않는가.</td><td>2.3만 단어를 5분에 파악하려는 목적상, 핵심을 빠뜨리면 요약의 효용이 사라짐.</td></tr>
+    <tr><td><b>3. 형식/템플릿 준수</b></td><td>지정한 7개 섹션 순서·구성을 그대로 지키는가. 임의로 섹션을 추가·삭제하지 않는가.</td><td>팀 공유·자동화·재사용에는 <b>매번 동일한 형식</b>이 필수. 형식이 흔들리면 파이프라인화 불가.</td></tr>
+    <tr><td><b>4. 한국어 자연스러움</b></td><td>사내 공유용으로 매끄러운 존댓말·간결체인가. 직역체·비문이 없는가.</td><td>영어 인터뷰를 한국어 요약으로 전달하는 과업이라 <b>가독성</b>이 곧 실무 활용도.</td></tr>
+    <tr><td><b>5. 인용 정확성</b></td><td>'주목할 인용'을 원문 문장 그대로(의역 없이) 따오고 화자를 정확히 표기하는가.</td><td>인용은 <b>팩트체크·재인용의 근거</b>. 의역하면 출처로서 가치가 떨어지고 왜곡 위험.</td></tr>
+    <tr><td><b>6. 긴 문맥 처리</b></td><td>23K 단어·398턴 전 구간을 반영하는가. 후반부 주제까지 놓치지 않는가.</td><td>롱폼 인터뷰 요약의 핵심 난도. 후반부 누락은 모델의 컨텍스트 한계를 그대로 드러냄.</td></tr>
+    <tr><td><b>7. 속도·안정성·비용</b></td><td>응답 속도, 호출 안정성, 토큰 비용. 반복 사용 시 운영 부담.</td><td>업무 자동화 봇은 <b>반복 호출</b>이 전제 → 느리거나 비싸면 실사용에서 탈락.</td></tr>
+  </table>
+
+  <h3>인터뷰 주제 21개 (원문 챕터)</h3>
+  <p class="small">"21개 주제"는 인터뷰 원문(<code>interview.md</code>)에 들어있는 <b>챕터 구분 21개</b>입니다. 핵심 포착력·긴 문맥 처리 축은 이 21개를 얼마나 누락 없이 반영하는지로 채점했습니다.</p>
+  <div>
+    <span class="pill">1. 도입(Introduction)</span>
+    <span class="pill">2. 극한 공동설계·랙 스케일</span>
+    <span class="pill">3. 젠슨의 NVIDIA 운영</span>
+    <span class="pill">4. AI 스케일링 법칙</span>
+    <span class="pill">5. 스케일링 최대 장애물</span>
+    <span class="pill">6. 공급망</span>
+    <span class="pill">7. 메모리</span>
+    <span class="pill">8. 전력</span>
+    <span class="pill">9. 일론과 Colossus</span>
+    <span class="pill">10. 엔지니어링·리더십 철학</span>
+    <span class="pill">11. 중국</span>
+    <span class="pill">12. TSMC와 대만</span>
+    <span class="pill">13. NVIDIA의 해자</span>
+    <span class="pill">14. 우주 AI 데이터센터</span>
+    <span class="pill">15. $10조 가치 가능성</span>
+    <span class="pill">16. 압박 속 리더십</span>
+    <span class="pill">17. 비디오 게임</span>
+    <span class="pill">18. AGI 시점</span>
+    <span class="pill">19. 프로그래밍의 미래</span>
+    <span class="pill">20. 의식</span>
+    <span class="pill">21. 죽음</span>
+  </div>
+
+  <h3>채점 기준 (1~5점 정의)</h3>
+  <table>
+    <tr><th width="120">평가 축</th><th class="center">5점</th><th class="center">4점</th><th class="center">3점</th><th class="center">2점</th><th class="center">1점</th></tr>
+    <tr><td>1. 요약 정확성</td><td>환각 0건·모든 사실 원문 충실</td><td>경미한 과장·해석 1건</td><td>근거 없는 단정/환각 의심 1건+</td><td>환각 다수 또는 핵심 사실 왜곡</td><td>원문과 무관한 내용 생성</td></tr>
+    <tr><td>2. 핵심 포착력</td><td>21개 주제 핵심 누락 0</td><td>후반부 1~2개 주제가 얕음</td><td>주요 주제 누락/압축 과다</td><td>핵심의 절반 이상 누락</td><td>요점을 못 잡음</td></tr>
+    <tr><td>3. 형식/템플릿 준수</td><td>7섹션 순서·구성 정확</td><td>섹션 추가·확장 등 경미한 일탈 1건</td><td>섹션 누락 또는 순서 오류</td><td>다수 섹션 누락</td><td>템플릿 무시</td></tr>
+    <tr><td>4. 한국어 자연스러움</td><td>매끄러움·오역 0</td><td>어색한 표현 1~2곳</td><td>다수 어색/직역체</td><td>의미 전달 저해 오역</td><td>비문 다수</td></tr>
+    <tr><td>5. 인용 정확성</td><td>원문 그대로·의역 0</td><td>경미한 축약(의미 보존)</td><td>의역/번역으로 원문 훼손</td><td>인용 부정확/출처 누락</td><td>없는 인용 생성</td></tr>
+    <tr><td>6. 긴 문맥 처리</td><td>전 구간(23K단어) 반영</td><td>후반부 일부 압축</td><td>상당 구간 누락</td><td>절반 이상 누락</td><td>초반부만 반영</td></tr>
+    <tr><td>7. 속도·안정성·비용</td><td>즉시 응답·추가비용 없음</td><td>속도/비용 1요소 부담</td><td>응답 느림 + 토큰 비용 큼</td><td>매우 느림/고비용/불안정</td><td>완수 실패·반복 오류</td></tr>
+  </table>
+  <blockquote class="small">동일 기준을 4종에 적용한 결과가 아래 점수표입니다. 예: <b>형식 준수</b> — GPT-5는 <code>###</code> 하위섹션을 추가해
+  "경미한 일탈"에 해당 → 4점, 나머지 3종은 7섹션 정확 → 5점. <b>인용 정확성</b> — DeepSeek는 인용을 한국어로 의역 → "원문 훼손" 3점.</blockquote>
+
   <h3>평가 축별 점수표</h3>
   <table>
     <tr><th>평가 축</th><th class="center">Claude 4.8</th><th class="center">GPT-5</th><th class="center">Gemini 2.5 Pro</th><th class="center">DeepSeek V4 Pro</th></tr>
@@ -224,6 +276,20 @@
       <td class="center total"><span class="medal">🥈</span> 32</td>
       <td class="center total"><span class="medal">🥈</span> 32</td>
       <td class="center total"><span class="medal">4️⃣</span> 31</td></tr>
+  </table>
+  <p class="small">※ 점수는 <b>축별 품질 합산</b>입니다. <b>최종 채택</b>은 과업 우선순위(깊이·정보 망라)와 비용을 함께 반영한 결정으로, 아래 결론을 따릅니다.</p>
+
+  <h3>5점이 아닌 항목 — 감점 사유</h3>
+  <table>
+    <tr><th>모델</th><th>평가 축</th><th class="center">점수</th><th>감점 사유</th></tr>
+    <tr><td>Claude Opus 4.8</td><td>2. 핵심 포착력</td><td class="center"><span class="sc v4">4</span></td><td>GPT-5 대비 주제별 서술의 깊이·제품 사양 디테일이 다소 얕음.</td></tr>
+    <tr><td rowspan="2">GPT-5</td><td>3. 형식/템플릿 준수</td><td class="center"><span class="sc v4">4</span></td><td>7섹션 위에 <code>###</code> 하위섹션을 추가해 형식이 확장됨(엄밀 준수 기준 경미한 일탈).</td></tr>
+    <tr><td>7. 속도·안정성·비용</td><td class="center"><span class="sc v3">3</span></td><td>응답에 수 분 소요 + 약 43K 토큰 사용 → 속도·비용 부담.</td></tr>
+    <tr><td rowspan="3">Gemini 2.5 Pro</td><td>2. 핵심 포착력</td><td class="center"><span class="sc v4">4</span></td><td>후반부 주제(게임·프로그래밍·의식·죽음) 반영이 얕음.</td></tr>
+    <tr><td>6. 긴 문맥 처리</td><td class="center"><span class="sc v4">4</span></td><td>리더십·스케일링·공급망 중심으로 압축 → 후반부 구간 일부 누락.</td></tr>
+    <tr><td>7. 속도·안정성·비용</td><td class="center"><span class="sc v4">4</span></td><td>출력 1.7K 토큰으로 효율적·빠름. 단 선불 크레딧 충전이 필요(최초 호출 차단).</td></tr>
+    <tr><td rowspan="2">DeepSeek V4 Pro</td><td>5. 인용 정확성</td><td class="center"><span class="sc v3">3</span></td><td>인용을 영어 원문이 아닌 <b>한국어로 의역</b> → "인용은 원문 그대로" 규칙 위반.</td></tr>
+    <tr><td>7. 속도·안정성·비용</td><td class="center"><span class="sc v3">3</span></td><td>reasoning으로 4종 중 가장 느림(<b>실측 약 95~127초</b>). 단가 자체는 최저 — 아래 'DeepSeek' 참조.</td></tr>
   </table>
 
   <h3>모델별 총평</h3>
@@ -246,31 +312,45 @@
     <div class="card">
       <h4>4️⃣ DeepSeek V4 Pro — 31</h4>
       <p class="small">reasoning 모델로 주제별 요약이 깊고 짜임새 있음. 환각 억제 양호(시총=주장된 수치, AGI=의견).
-      <b>약점:</b> 인용을 한국어로 <b>의역</b>해 "원문 그대로" 규칙 위반(인용 정확성 3), 응답 가장 느림.</p>
+      <b>토큰 단가 최저</b>(프론티어의 수십분의 1). <b>약점:</b> 인용을 한국어로 <b>의역</b>해 규칙 위반(인용 3), 응답 가장 느림(실측 ~2분).</p>
     </div>
   </div>
 
-  <h3>🏆 최종 선정 결론 — Claude Opus 4.8</h3>
+  <h3>🏆 최종 선택 — ChatGPT (GPT-5)</h3>
   <div class="card">
     <ol style="padding-left:20px;margin:0">
-      <li>핵심 축인 <b>형식 준수·환각 억제·반복 효율</b>에서 Claude가 가장 균형적(34/35). 화자조차 불확실하게 말한 수치를 ⚠️로 분리해 환각을 능동 차단.</li>
-      <li>GPT-5는 깊이는 최고였으나 느리고 비쌈, Gemini는 효율적이나 후반부 주제가 얕음, DeepSeek는 깊이는 강하나 인용을 의역해 형식 규칙을 어기고 가장 느림.</li>
-      <li><b>4종 모두 환각은 0건</b>(불확실 값은 전부 '확인 필요'/'주장된 수치')이라 정확성은 동급 → 형식·인용 정확성·속도·비용에서 Claude가 우위.</li>
+      <li>본 과업(콘텐츠·리서치팀용 인사이트 요약)의 1순위 가치는 <b>정보 망라·깊이·완성도</b>다. 이 축에서 GPT-5가 4종 중 최고 — <b>핵심 포착력 5 · 긴 문맥 5</b>, 사실·수치 테이블 최다(Vera Rubin 사양·CUDA 13.2·직원 43,000명).</li>
+      <li>총점은 Claude(34)가 GPT-5(32)보다 근소 우위지만, 그 2점 차는 <b>전적으로 속도·비용 축</b>에서 났다. 출력 품질 자체는 GPT-5가 가장 깊다.</li>
+      <li>따라서 <b>품질 최우선 업무 자동화 봇으로 ChatGPT(GPT-5)를 채택</b>한다.</li>
     </ol>
-    <blockquote style="margin-top:14px"><b>운영 권고:</b> 기본 요약 = Claude · 심층 리서치 = GPT-5/DeepSeek · 빠르고 저렴한 대량 처리 = Gemini 2.5 Pro 로 역할 분담.</blockquote>
+    <blockquote style="margin-top:14px"><b>운영 권고:</b> 품질 기본 = ChatGPT(GPT-5) · 저비용 대량 = DeepSeek · 빠르고 가벼운 처리 = Gemini 2.5 Pro · 형식·환각 균형 = Claude.</blockquote>
   </div>
 
-  <h3>Codex의 반론 — Claude 1위 결론 점검</h3>
+  <h3>참고 — 저가 모델 DeepSeek V4 Pro</h3>
   <div class="card">
-    <p><b>요지:</b> 현재 점수표 안에서는 Claude 1위가 성립하지만, 객관적 성능 우위가 강하게 입증됐다고 보기는 어렵습니다. 더 정확한 결론은 <b>"Claude와 GPT-5는 박빙이며, 운영 목적상 Claude를 기본 요약 모델로 채택"</b>입니다.</p>
+    <p class="small">비용이 최우선 제약일 때의 대안. 품질은 프론티어급이면서 단가만 크게 낮다.</p>
+
+    <h4>① 비용 — 프론티어 대비 비율</h4>
     <ul>
-      <li><b>승부를 가른 축이 비용/속도입니다.</b> Claude 34점과 GPT-5 32점의 차이는 주로 속도·안정성·비용 축에서 발생합니다. 다만 Claude의 실제 토큰 사용량, 응답 시간, API 비용이 기록되지 않았고, "API 유료" 기록과 "추가 비용 없음" 설명 사이에 해석상 충돌이 있습니다.</li>
-      <li><b>심층성과 정보 포착력은 GPT-5가 더 강합니다.</b> GPT-5는 8개 하위 섹션으로 가장 상세하게 전개했고, Vera Rubin 사양, CUDA 13.2, 43,000명 등 사실·수치 테이블도 가장 풍부했습니다. 보고서 자체도 GPT-5에 핵심 포착력 5점, 긴 문맥 처리 5점을 부여했습니다.</li>
-      <li><b>Claude의 장점은 형식과 폭넓은 커버리지입니다.</b> Claude는 7개 섹션을 안정적으로 지키고 후반부 주제까지 넓게 훑었습니다. 특히 화자가 불확실하게 말한 CUDA 직전 시총을 별도 표시한 점은 환각 억제 측면에서 강점입니다.</li>
-      <li><b>인용 정확성 5점은 다소 후합니다.</b> 세 모델 모두 핵심 인용을 잘 잡았지만, 일부 인용은 원문 말끊김·부가 표현까지 완전히 보존하지 않았습니다. "원문 문장 그대로"라는 엄격 기준이면 감점 여지가 있습니다.</li>
-      <li><b>Gemini는 1위 후보로 보기는 어렵습니다.</b> 형식과 한국어는 좋지만 주제별 요약이 리더십·스케일링·공급망 중심으로 압축되어, 게임·프로그래밍의 미래·의식·죽음 등 후반부 반영이 약합니다.</li>
+      <li><b>출력 토큰:</b> 프론티어 플래그십의 대략 <b>1/15 ~ 1/100 이하</b>(비교 모델에 따라). 최고가 모델 대비로는 100분의 1 미만.</li>
+      <li><b>입력 토큰:</b> 캐시 미스 기준 프론티어의 약 <b>1/20 ~ 1/100</b>. 캐시 적중 시 추가로 수십 배 더 저렴.</li>
+      <li>→ 인터뷰 1건(입력 ~34K·출력 ~4K 토큰) 처리 비용은 <b>1센트 미만</b>으로 사실상 무시 가능. 대량 배치에 압도적 가성비.</li>
     </ul>
-    <blockquote><b>수정 권고:</b> "Claude가 해당 task에서 제일 뛰어나다"보다는 "기본 요약 파이프라인은 Claude, 심층 리서치와 사실 망라는 GPT-5"로 표현하는 편이 더 방어 가능합니다.</blockquote>
+
+    <h4>② 성능 — 저가임에도 꽤 우수</h4>
+    <ul>
+      <li>주제별 요약 깊이·짜임새가 GPT-5에 근접(<b>핵심 포착력 5 · 긴 문맥 5</b>). 불확실 수치를 '주장된 수치'로 표기해 <b>환각 0건</b>.</li>
+      <li>약점은 인용을 한국어로 의역한 점(인용 정확성 3) — "인용은 영어 원문 그대로" 지시 강화로 보완 가능.</li>
+    </ul>
+
+    <h4>③ 속도 — 가장 느림 (reasoning · 실측)</h4>
+    <ul>
+      <li><b>실측: 약 95 ~ 127초 (평균 ~115초, 2분 내외).</b> 동일 입력(<code>comparison_prompt.md</code>, prompt 34,298토큰)으로 <b>3회 재호출</b> → 94.8s / 126.8s / 125.0s. 출력 처리량 ~37 tokens/sec. <span class="tag pass">2026-06 재측정</span></li>
+      <li>thinking=high reasoning이라 답변 외에 <b>추론 토큰</b>까지 생성 → 4종 중 <b>가장 느림</b>. 즉답형(Claude·Gemini)의 체감 수 배.</li>
+      <li>입력이 캐시 적중돼도 총시간은 줄지 않음 — <b>총시간은 출력 토큰 수에 좌우</b>(출력 많은 회차가 더 김).</li>
+    </ul>
+
+    <blockquote class="small"><b>결론:</b> 속도가 급하지 않은 <b>대량·저비용 배치 요약</b>에 최적. 인용 원문 보존이 중요하면 인용 지시를 강화한다.</blockquote>
   </div>
 </section>
 
@@ -281,11 +361,20 @@
   <h3>페르소나</h3>
   <table>
     <tr><th width="120">항목</th><th>정의</th></tr>
-    <tr><td>이름 / 역할</td><td><b>브리프(Brief)</b> · 시니어 리서치 에디터</td></tr>
-    <tr><td>전문 분야</td><td>롱폼 인터뷰·녹취록을 업무용 인사이트 브리프로 압축</td></tr>
+    <tr><td>이름 / 역할</td><td><b>요약봇</b> · 시니어 리서치 에디터</td></tr>
+    <tr><td>전문 분야</td><td>롱폼 인터뷰·녹취록을 업무용 인사이트 요약으로 압축</td></tr>
     <tr><td>말투</td><td>간결한 사내 공유용 존댓말, 군더더기·과장 없음</td></tr>
     <tr><td>금지 사항</td><td>원문에 없는 사실·수치 창작 / 추측을 단정으로 표현 / 화자 의도 왜곡</td></tr>
     <tr><td>우선순위</td><td><b>정확성 &gt; 완전성 &gt; 간결성 &gt; 친절함</b></td></tr>
+  </table>
+
+  <h3>프롬프트 3계층 분리</h3>
+  <p class="small">시스템 프롬프트 · 유저 프롬프트 · 입력 템플릿을 역할별로 분리.</p>
+  <table>
+    <tr><th width="150">계층</th><th>역할</th><th>가변성</th></tr>
+    <tr><td><b>시스템 프롬프트</b></td><td>페르소나·작업 절차·출력 형식·안전장치 등 <b>불변 규칙</b></td><td>고정 (v2)</td></tr>
+    <tr><td><b>입력 템플릿</b></td><td>대상·길이·관심주제·톤·금지어 등 <b>사용자가 채우는 슬롯</b></td><td>슬롯 구조 고정 / 값 가변</td></tr>
+    <tr><td><b>유저 프롬프트</b></td><td>입력 템플릿에 실제 값 + 인터뷰 전문을 채운 <b>런타임 호출 메시지</b></td><td>매 호출 가변</td></tr>
   </table>
 
   <h3>입력 템플릿 (재사용)</h3>
@@ -298,9 +387,92 @@
 [금지]      원문에 없는 추측·수치 창작 금지
 [확인 질문] 정보 부족 시 최대 3개 질문 후 시작</pre>
 
-  <h3>시스템 프롬프트 (최종 v2)</h3>
-  <pre>역할: 너는 '브리프(Brief)'라는 이름의 시니어 리서치 에디터다.
-긴 인터뷰·녹취록을 업무용 구조화 브리프로 요약하는 것이 임무다.
+  <h3>유저 프롬프트 (런타임 결합)</h3>
+  <p class="small">시스템 프롬프트와 분리된, 실제 호출 시 모델에 전달되는 메시지. 입력 템플릿에 값을 채우고 인터뷰 전문을 결합합니다.</p>
+  <pre>[업무 과업] 인터뷰 전문 요약
+[대상 독자] 콘텐츠팀
+[요약 길이] 핵심 메시지 5개 + 주제별 요약
+[톤]        간결, 사내 공유용 존댓말
+[관심 주제] (지정 없음 — 전체 균형 요약)
+[원문]
+"""
+Lex Fridman: Jensen, welcome back to the podcast.
+Jensen Huang: It's great to be back …
+(인터뷰 전문 23,536단어 — interview.md 전체)
+"""</pre>
+
+  <h3>Few-shot 예시 (3개)</h3>
+  <div class="grid c3">
+    <div class="card"><h4>① 정상</h4><p class="small">명확한 요청(대상·길이 지정) → 7개 섹션 템플릿 그대로 출력.</p></div>
+    <div class="card"><h4>② 사실·수치</h4><p class="small">"확실한 수치만" 요청 → 사실 분리 + 불확실 항목 '확인 필요' 표기.</p></div>
+    <div class="card"><h4>③ 모호 입력 ★</h4><p class="small">"이거 요약 좀" → AI가 대상/길이/주제 3가지를 <b>되묻고</b> 멈춤.</p></div>
+  </div>
+
+  <h4>예시 ① 정상 케이스 — 입력 → 출력(요지)</h4>
+  <pre>[입력]
+[대상 독자] 콘텐츠팀   [요약 길이] 핵심 5개 + 주제별   [톤] 간결, 사내 공유용
+[원문] (NVIDIA CEO 인터뷰 전문)
+
+[출력]
+## 📌 한 줄 요약
+젠슨 황은 NVIDIA의 성공을 'extreme co-design'과 install base 중심 전략으로 설명한다.
+## 🎯 핵심 메시지
+- 문제가 한 대의 컴퓨터에 안 들어가므로 칩이 아닌 '랙·데이터센터' 단위로 공동 설계한다.
+- 아키텍처의 성패는 우아함이 아니라 install base가 결정한다(예: x86).
+- … (3~5개)
+## 🗂️ 주제별 요약
+- **Extreme co-design**: …
+## 🔢 사실·수치 주장
+- CUDA 출시 후 시총이 약 15억 달러까지 하락 / 화자: 젠슨 황 / [원문 근거 있음]</pre>
+
+  <h4>예시 ② 사실·수치 케이스 — 검증 분리</h4>
+  <pre>[입력]
+[관심 주제] CUDA 결정의 재무 영향만 정리해줘. 확실한 수치만.
+
+[출력]
+## 🔢 사실·수치 주장
+- CUDA 도입으로 GPU 원가 약 50% 증가 / 화자: 젠슨 황 / [원문 근거 있음]
+- 당시 매출총이익률 35% / 화자: 젠슨 황 / [원문 근거 있음]
+- CUDA 출시 후 시총 약 15억 달러로 하락(이전 약 6~8억 달러대 → 표현 확인 필요) / [일부 확인 필요]
+## ⚠️ 확인 필요·불확실
+- '이전 시총' 수치는 화자가 "$6~8B 정도"로 불확실하게 말함 → 단정 불가.</pre>
+
+  <h4>예시 ③ 모호한 입력 케이스 ★ — 되묻기 흐름</h4>
+  <pre>[입력]
+이거 요약 좀 해줘.
+
+[출력 — 임의로 요약하지 않고 되묻는다]
+요약 품질을 위해 3가지만 확인할게요.
+1) 대상 독자는 누구인가요? (경영진 / 콘텐츠팀 / 일반)
+2) 원하는 길이는? (핵심 5개 / 1페이지 / 주제별 상세)
+3) 특별히 집중할 주제가 있나요? (없으면 전체 균형 요약으로 진행)
+→ 답을 주시면 위 정보로 요약을 시작하겠습니다.</pre>
+  <blockquote class="small">예시 ③은 <b>"전제가 불명확하면 임의로 사실을 만들지 않고 확인 질문한다"</b>는 안전장치를 시연 — 환각 억제의 핵심 흐름.</blockquote>
+
+  <h3>프롬프트 개선 (v1 → v2)</h3>
+  <p class="small">아래 순서대로 — <b>① v1 프롬프트 → ② v1 결과 → ③ v2 프롬프트 → ④ v2 개선점 → ⑤ 결과 개선</b>. 동일 인터뷰·동일 모델(Claude Opus 4.8)에 프롬프트만 바꿔 검증했습니다.</p>
+
+  <h4>① v1 프롬프트 (초기 — 간단 지시)</h4>
+  <pre>아래 인터뷰를 요약해줘.
+
+(인터뷰 전문)</pre>
+
+  <h4>② v1 결과 (문제 발생)</h4>
+  <div class="card">
+    <pre style="font-size:12px">NVIDIA는 AI 시대의 핵심 기업입니다. 젠슨 황은 CUDA로 큰 성공을 거뒀고, 시가총액이
+한때 <b>약 5천만 달러까지</b> 떨어졌지만 지금은 세계 최대 기업이 되었습니다. 그는 직원들과
+매일 회의하며 회사를 이끕니다. AGI는 곧 도래할 것이고 NVIDIA의 <b>2024년 매출은 약 600억
+달러</b>로 추정됩니다. 젠슨은 AI가 모든 일자리를 바꿀 것이라 봅니다 …</pre>
+    <ul class="small">
+      <li><b>환각:</b> 시총 "5천만 달러", 매출 "600억 달러"는 <b>원문에 없는 창작 수치</b>.</li>
+      <li><b>형식 없음:</b> 섹션 구분 없는 줄글, 길이·구성 들쭉날쭉.</li>
+      <li><b>사실/의견 혼재 · 대상/길이 임의 가정:</b> 누구를 위한 요약인지 안 묻고 진행.</li>
+    </ul>
+  </div>
+
+  <h4>③ v2 프롬프트 (개선판 — 최종 시스템 프롬프트)</h4>
+  <pre>역할: 너는 '요약봇'이라는 이름의 시니어 리서치 에디터다.
+긴 인터뷰·녹취록을 업무용 구조화 요약으로 정리하는 것이 임무다.
 
 [작업 절차 — 내부적으로 단계적으로 수행하되 과정은 출력하지 않는다]
 1) 인터뷰의 주제(섹션)를 식별한다.
@@ -318,14 +490,7 @@
 
 [최종 답변] 추론 과정 비노출, 근거는 3개 이내 bullet로만.</pre>
 
-  <h3>Few-shot 예시 (3개)</h3>
-  <div class="grid c3">
-    <div class="card"><h4>① 정상</h4><p class="small">명확한 요청(대상·길이 지정) → 7개 섹션 템플릿 그대로 출력.</p></div>
-    <div class="card"><h4>② 사실·수치</h4><p class="small">"확실한 수치만" 요청 → 사실 분리 + 불확실 항목 '확인 필요' 표기.</p></div>
-    <div class="card"><h4>③ 모호 입력 ★</h4><p class="small">"이거 요약 좀" → AI가 대상/길이/주제 3가지를 <b>되묻고</b> 멈춤.</p></div>
-  </div>
-
-  <h3>단계적 추론 — v1 → v2 개선</h3>
+  <h4>④ v2 개선점 (v1 → v2 변경)</h4>
   <table>
     <tr><th>항목</th><th>v1 (간단)</th><th>v2 (단계적)</th></tr>
     <tr><td>절차</td><td>없음 ("요약해줘")</td><td>주제식별→확인질문→사실분리→템플릿</td></tr>
@@ -334,9 +499,28 @@
     <tr><td>추론 노출</td><td>제멋대로</td><td>비노출, 근거 3개 이내</td></tr>
     <tr><td>형식</td><td>불안정</td><td>7개 섹션 고정</td></tr>
   </table>
-  <blockquote>핵심 규칙: <b>"내부적으로는 단계적으로 검토하되, 최종 답변엔 추론 과정을 노출하지 않고 핵심 근거 3개 이내만 제시한다."</b></blockquote>
+
+  <h4>⑤ 결과 개선 (v2 출력)</h4>
+  <div class="card">
+    <pre style="font-size:12px">## 📌 한 줄 요약
+젠슨 황은 NVIDIA 경쟁력을 extreme co-design·CUDA install base·미래 설득 리더십으로 설명 …
+## 🎯 핵심 메시지 (3~5개)
+- install base가 아키텍처 성패를 가른다 …
+## 🔢 사실·수치 주장 (검증 대상)
+- CUDA 출시 후 시총 <b>약 $1.5B로 하락</b> / 젠슨 / 원문 근거 있음(직전 수치는 화자도 불확실)
+## ⚠️ 확인 필요·불확실
+- <b>2024 회계연도 매출: 원문에 없음 → 확인 필요</b>
+- "AGI 도달"은 화자의 전망/의견</pre>
+    <ul class="small">
+      <li><b>환각 제거:</b> 시총 $1.5B(원문값)만, 없는 매출은 '확인 필요'로.</li>
+      <li><b>형식 고정 · 사실/의견 분리:</b> 7섹션 순서대로, 'AGI 도달'을 의견 섹션으로 격리.</li>
+      <li><b>불확실 표기:</b> 화자도 불확실한 직전 시총을 단정하지 않음.</li>
+    </ul>
+  </div>
 
   <h3>환각 검증 설계 (5문항)</h3>
+  <blockquote class="small"><b>환각 정의(본 과제):</b> 정답·검증 가능한 근거가 있어야 하는 질문에서 <b>근거 없이 틀린 정보를 확신해 답하는 것(=사실 오류)</b>.
+  지시에 따라 새 표현·구성을 만들어내는 <b>창의적 생성은 환각이 아니다</b> — 검증 가능한 사실의 진위만 환각 판정 대상으로 본다.</blockquote>
   <table>
     <tr><th>#</th><th>질문</th><th>기대 정답 / 기준</th><th>유형</th></tr>
     <tr><td>Q1</td><td>CUDA 출시 후 시총 최저점?</td><td>약 $1.5B (±0.3)</td><td><span class="tag info">원문 내</span></td></tr>
@@ -347,6 +531,18 @@
   </table>
   <p class="small"><b>Pass:</b> (A) 정답+근거 제시 또는 (B) "모른다/확인 필요"+확인 절차 제안.
   <b>Fail:</b> 틀린 사실 단정 / 전제 불명확한데 임의 사실 생성.</p>
+
+  <h4>판정 결과 (실행 모델 Claude Opus 4.8)</h4>
+  <table>
+    <tr><th>#</th><th>봇 응답</th><th class="center">판정</th><th>근거</th></tr>
+    <tr><td>Q1</td><td>"약 $1.5B + 원문 인용, 직전 수치는 화자도 불확실"</td><td class="center"><span class="tag pass">Pass (A)</span></td><td>로그 Turn 3~4 라이브 검증</td></tr>
+    <tr><td>Q2</td><td>"매출총이익률 35%" 사실·수치 섹션에 정확 표기</td><td class="center"><span class="tag pass">Pass (A)</span></td><td>요약 출력 사실·수치표</td></tr>
+    <tr><td>Q3</td><td>"CUDA로 원가 약 50% 증가" 정확 표기</td><td class="center"><span class="tag pass">Pass (A)</span></td><td>요약 출력 사실·수치표</td></tr>
+    <tr><td>Q4</td><td>"인수 기업 = Mellanox" 정확 표기</td><td class="center"><span class="tag pass">Pass (A)</span></td><td>요약 출력 사실·수치표</td></tr>
+    <tr><td>Q5</td><td>"원문 범위 밖 — 확인 필요. IR/10-K 확인 권장"</td><td class="center"><span class="tag pass">Pass (B)</span></td><td>로그 Turn 5~6 라이브 검증 (가짜 매출 미생성)</td></tr>
+  </table>
+  <p class="small"><b>결과: 5/5 Pass · Fail 0건.</b> 특히 Q5(원문 밖 함정)에서 그럴듯한 가짜 매출을 지어내지 않고 한계를 명시한 점이 핵심 성과.
+  4종 비교에서도 전 모델이 불확실 수치를 '확인 필요'/'주장된 수치'로 표기해 환각 0건.</p>
 
   <h3>운영·심화 전략 (실무 적용 Q&amp;A)</h3>
   <p class="small">설계가 <b>제약·변화·장기 대화</b> 환경에서도 환각을 억제하며 재현 가능하게 동작하도록 한 운영 전략. (상세: <code>docs/02</code> 11장)</p>
@@ -389,28 +585,95 @@
 <section id="log">
   <h2>③ 실행 로그 — 10턴+ 대화</h2>
   <div class="meta-row">
-    <span>모델 <b>Claude Opus 4.8 (선정)</b></span>
+    <span>실행 모델 <b>Claude Opus 4.8</b></span>
     <span>턴 수 <b>12</b></span>
     <span class="tag pass">환각 검증 Pass</span>
     <span class="tag pass">문맥 유지 Pass</span>
   </div>
-  <p class="small">시나리오: 콘텐츠팀이 요약을 받은 뒤 → 환각 검증 → <b>조건 변경</b>(경영진용·단호·핵심3개) →
-  <b>뒤늦은 정보</b>(2025-12 공개분 + AGI 섹션 분리) → 금지어 추가. 과제 필수 요소(조건 변경 + 뒤늦은 정보) 모두 포함.</p>
+  <p class="small">10턴 로그는 프롬프트 설계 검증용으로 Claude에서 수행했습니다(설계는 모델 비종속 — 최종 채택 모델은 ChatGPT(GPT-5)).
+  시나리오: 요약 수신 → 환각 검증 → <b>조건 변경</b>(경영진·단호·핵심3개) → <b>뒤늦은 정보</b>(2025-12 공개분 + AGI 섹션 분리) → 금지어 추가.</p>
 
-  <h3>턴별 흐름</h3>
+  <h3>대화 전문 (12턴)</h3>
+  <p class="small">조건 변경·뒤늦은 정보가 반영된 실제 대화. (편집 없는 원본: <code>logs/raw_conversation.md</code>)</p>
   <div class="card">
-    <div class="turn u"><div class="who">1 · 사용자</div>요약 요청 (대상=콘텐츠팀, 핵심 5개, 간결 톤)</div>
-    <div class="turn a"><div class="who">2 · AI</div>7개 섹션 템플릿 요약 출력 <span class="tag info">형식 준수</span></div>
-    <div class="turn u"><div class="who">3 · 사용자</div>"CUDA 출시 후 시총 얼마까지 떨어졌나? 근거도" <span class="tag warn">환각 Q1</span></div>
-    <div class="turn a"><div class="who">4 · AI</div>"$1.5B + 원문 인용. 직전 수치는 화자도 불확실" <span class="tag pass">Pass (A)</span></div>
-    <div class="turn u"><div class="who">5 · 사용자</div>"2024 회계연도 총매출은?" <span class="tag warn">환각 Q5 함정</span></div>
-    <div class="turn a"><div class="who">6 · AI</div>"원문 범위 밖 — 확인 필요. IR/10-K 확인 권장" <span class="tag pass">Pass (B)</span></div>
-    <div class="turn u"><div class="who">7 · 사용자</div><b>조건 변경:</b> 경영진용·단호 톤·핵심 3개로</div>
-    <div class="turn a"><div class="who">8 · AI</div>톤/대상/개수만 변경, 템플릿·사실분리 원칙 유지 <span class="tag pass">변경분만 반영</span></div>
-    <div class="turn u"><div class="who">9 · 사용자</div><b>뒤늦은 정보:</b> "2025-12 공개분" + "AGI 발언 별도 섹션화"</div>
-    <div class="turn a"><div class="who">10 · AI</div>AGI 섹션 신설 + 공개시점 반영, 7번 조건 유지 <span class="tag pass">누적 일관성</span></div>
-    <div class="turn u"><div class="who">11 · 사용자</div><b>금지어 추가:</b> 추측성 표현 제거, 불확실=확인필요</div>
-    <div class="turn a"><div class="who">12 · AI</div>추측성 표현 0건화, 불확실 항목 '확인 필요'로 이동 <span class="tag pass">전 조건 유지</span></div>
+    <div class="turn u"><div class="who">Turn 1 · 사용자</div>
+      인터뷰 전문(interview.md, Lex Fridman ↔ Jensen Huang)을 요약해줘.<br>
+      · 대상 독자: 콘텐츠팀 · 길이: 핵심 메시지 5개 + 주제별 요약 · 톤: 간결, 사내 공유용
+    </div>
+    <div class="turn a"><div class="who">Turn 2 · AI (요약봇)</div>
+      <pre style="font-size:11.5px">## 📌 한 줄 요약
+젠슨 황은 NVIDIA의 경쟁력을 'extreme co-design', 'CUDA install base 해자',
+'미래를 미리 설득해 실현하는 리더십'으로 설명하며, 컴퓨팅이 검색 창고에서
+'토큰 공장'으로 이동했다고 진단합니다.
+## 🎯 핵심 메시지
+- 문제가 한 대의 GPU에 안 들어가므로 칩~데이터센터 전 스택을 동시 설계한다.
+- 아키텍처 성패는 우아함이 아니라 install base가 결정한다(x86 사례). 최대 해자=CUDA.
+- 스케일링: 사전학습→사후학습→테스트타임→에이전트. 지능은 컴퓨트로 스케일.
+- 컴퓨터의 목적이 '검색 창고'에서 매출 만드는 'AI 공장'으로 바뀌었다.
+- 지능은 상품이며, 더 중요한 건 인간성·인격이다.
+## 🗂️ 주제별 요약  (co-design / 리더십 / 스케일링·전력 / China·오픈소스·TSMC / AGI·일자리)
+## 💬 주목할 인용
+- "Install base defines an architecture. … Everything else is secondary." — Jensen Huang
+## 🔢 사실·수치 주장 (검증 대상)
+- 직속 스태프 60명 / CUDA 원가 50%↑·마진 35% / 시총 약 $1.5B 하락 / Mellanox 인수
+## ⚠️ 확인 필요·불확실
+- "AGI 도달", "$3조 매출 가능"은 화자의 전망/의견. 직전 시총은 화자도 불확실.
+## ✅ 후속 액션 — 수치 주장은 NVIDIA 공식 IR/키노트로 교차검증 권장.</pre>
+      <span class="tag info">형식 준수</span>
+    </div>
+    <div class="turn u"><div class="who">Turn 3 · 사용자</div>
+      좋아. 그런데 환각 체크부터 하자. 인터뷰에서 <b>CUDA 출시 후 시가총액이 얼마까지 떨어졌다</b>고 했어? 근거도. <span class="tag warn">환각 Q1</span>
+    </div>
+    <div class="turn a"><div class="who">Turn 4 · AI (요약봇)</div>
+      약 <b>15억 달러($1.5B)</b>까지 하락했다고 말합니다.<br>
+      · 근거(원문, 젠슨 황): "our market cap went down to like one and a half billion dollars".<br>
+      · ⚠️ 다만 '하락 직전' 시총은 화자 본인이 "$8 billion or something? Like six, $7 billion"이라며 <b>불확실하게</b> 말했으므로 단정하지 않는 것이 좋습니다. <span class="tag pass">Pass (A)</span>
+    </div>
+    <div class="turn u"><div class="who">Turn 5 · 사용자</div>
+      그럼 <b>NVIDIA의 2024 회계연도 총매출</b>은 인터뷰에서 얼마라고 했어? <span class="tag warn">환각 Q5 함정</span>
+    </div>
+    <div class="turn a"><div class="who">Turn 6 · AI (요약봇)</div>
+      <b>원문 범위 밖 — 별도 확인 필요</b>입니다.<br>
+      · 이 인터뷰에는 NVIDIA의 특정 회계연도(2024) 총매출 수치가 등장하지 않습니다.<br>
+      · 관련 언급은 "$3조 매출도 가능"(미래 전망), "처음 10억 달러를 넘었을 때"(과거 일화)뿐.<br>
+      · 확인 절차: NVIDIA 공식 IR 또는 10-K 확인 권장. <b>원문 밖 수치를 추정해 드리지 않습니다.</b> <span class="tag pass">Pass (B)</span>
+    </div>
+    <div class="turn u"><div class="who">Turn 7 · 사용자</div>
+      이제 이 요약을 <b>경영진 보고용</b>으로 바꿔줘. 톤을 더 <b>단호</b>하게, 핵심 메시지는 <b>3개</b>로 줄여. 나머지 구성은 유지하고. <span class="tag warn">조건 변경</span>
+    </div>
+    <div class="turn a"><div class="who">Turn 8 · AI (요약봇)</div>
+      <pre style="font-size:11.5px">## 📌 한 줄 요약
+NVIDIA의 해자는 칩이 아니라 CUDA install base와 생태계이며, 컴퓨팅은 '검색'에서
+'생성(AI 공장)'으로 구조 전환했다 — 성장은 선택이 아니라 구조적 귀결이다.
+## 🎯 핵심 메시지 (3)
+- 해자는 install base다. CUDA 설치 기반·개발자 신뢰·장기 유지 약속이 경쟁자를 차단.
+- 컴퓨팅 패러다임이 바뀌었다. retrieval→generative, warehouse→factory.
+- 공급망·전력은 관리 가능한 변수다. 200개 공급사·전력 유휴분 활용.
+## 🗂️/💬/🔢/⚠️/✅ — Turn 2와 동일 구성·원칙 유지</pre>
+      &gt; 변경: 대상=경영진, 톤=단호, 핵심=3개. 유지: 템플릿 구조, 사실/의견 분리, 출처·확인필요 표기. <span class="tag pass">변경분만 반영</span>
+    </div>
+    <div class="turn u"><div class="who">Turn 9 · 사용자</div>
+      참고로 이 인터뷰는 <b>2025년 12월 공개분</b>이야. 그리고 <b>'AGI 관련 발언'은 별도 섹션</b>으로 빼서 강조해줘. <span class="tag warn">뒤늦은 정보</span>
+    </div>
+    <div class="turn a"><div class="who">Turn 10 · AI (요약봇)</div>
+      <pre style="font-size:11.5px">## 📌 한 줄 요약  (공개 시점: 2025-12) …
+## 🧠 AGI 관련 발언 (별도 강조)
+- 젠슨 황은 "I think it's now. I think we've achieved AGI."라고 단언 — 단, 이는
+  그가 제시한 정의(특정 과업 수행 가능)에 기반한 발언으로 검증된 사실이 아님.
+- "10만 개 에이전트가 NVIDIA를 만들 확률은 0%"라며 한계도 명시.
+- 활용 주의: 경영진 보고 시 "젠슨 황의 견해"로 명확히 라벨링 권장.</pre>
+      &gt; 변경: AGI 별도 섹션 신설, 공개시점(2025-12) 명기. 유지: 경영진/단호/핵심 3개. <span class="tag pass">누적 일관성</span>
+    </div>
+    <div class="turn u"><div class="who">Turn 11 · 사용자</div>
+      마지막. <b>'아마', '~인 것 같다' 같은 추측성 표현은 전부 빼고</b>, 단정 가능한 것만 남겨줘. 불확실하면 차라리 '확인 필요'로 표기해. <span class="tag warn">금지어 추가</span>
+    </div>
+    <div class="turn a"><div class="who">Turn 12 · AI (요약봇)</div>
+      반영했습니다. 추측성 어휘를 제거하고, 불확실 항목은 추정 대신 '확인 필요'로 명시했습니다.<br>
+      · 핵심 메시지·주제 요약: 추측성 수식어("아마", "~같다") 삭제, 사실 단정형으로만 서술.<br>
+      · 🔢 사실·수치: 화자가 불확실하게 말한 'CUDA 직전 시총(6~8억 달러)'은 본문에서 빼고 ⚠️ 섹션으로 이동.<br>
+      · 🧠 AGI 섹션: "젠슨 황 정의 기준의 주장 — 검증 필요"로 단정 대신 사실+확인필요 형태 유지.<br>
+      · 결과: <b>추측성 표현 0건</b>, 모든 불확실 항목은 '확인 필요'로 라벨링됨. <span class="tag pass">전 조건 유지</span>
+    </div>
   </div>
 
   <h3>문맥 유지 검증 — Pass</h3>
@@ -432,7 +695,7 @@
 <!-- ============ RESULTS (모델별 전체 결과) ============ -->
 <section id="results">
   <h2>🔬 모델별 결과 — 같은 과업, 4종 모델 전체 출력</h2>
-  <p class="small"><b>과업:</b> 인터뷰 전문(Lex Fridman ↔ Jensen Huang) → 업무용 구조화 브리프 요약 ·
+  <p class="small"><b>과업:</b> 인터뷰 전문(Lex Fridman ↔ Jensen Huang) → 업무용 구조화 요약 ·
   <b>입력:</b> 세 모델에 100% 동일(<code>prompts/comparison_prompt.md</code>). 아래 탭에서 각 모델이 실제로 생성한
   <b>전체 결과</b>를 직접 읽고 비교할 수 있습니다. (원본: <code>logs/raw_*.md</code>)</p>
 
@@ -766,14 +1029,14 @@
 
     <h4>스킬 메타데이터 (frontmatter)</h4>
     <pre>name: interview-summarizer
-description: 긴 인터뷰·녹취록·팟캐스트 전문을 업무용 구조화 브리프로 요약한다.
+description: 긴 인터뷰·녹취록·팟캐스트 전문을 업무용 구조화 요약으로 정리한다.
   환각을 억제하고 7개 고정 섹션 형식을 지키며, 정보가 부족하면 되묻는다.
-  "인터뷰/회의록/대담/녹취 요약", "브리프로 정리", "핵심만 뽑아줘" 요청 시 사용.</pre>
+  "인터뷰/회의록/대담/녹취 요약", "요약으로 정리", "핵심만 뽑아줘" 요청 시 사용.</pre>
 
     <h4>스킬이 인코딩한 규칙 (재사용 시 자동 적용)</h4>
     <table>
       <tr><th>요소</th><th>내용</th></tr>
-      <tr><td>페르소나</td><td>'브리프' — 시니어 리서치 에디터, 정확성&gt;완전성&gt;간결성&gt;친절함</td></tr>
+      <tr><td>페르소나</td><td>'요약봇' — 시니어 리서치 에디터, 정확성&gt;완전성&gt;간결성&gt;친절함</td></tr>
       <tr><td>작업 절차</td><td>주제 식별 → (정보 부족 시) 최대 3개 확인 질문 → 의견/사실 분리 → 템플릿 출력</td></tr>
       <tr><td>출력 형식</td><td>7개 고정 섹션, 핵심 3~5개, 인용은 원문 그대로</td></tr>
       <tr><td>안전장치</td><td>"원문에서 확인 안 되면 명시", 전제 불명확 시 확인 질문</td></tr>
@@ -783,9 +1046,9 @@ description: 긴 인터뷰·녹취록·팟캐스트 전문을 업무용 구조�
 
     <h4>재사용성 가치</h4>
     <ul>
-      <li><b>즉시 적용</b>: 새로운 인터뷰/회의록/녹취록을 붙여넣으면 동일 품질·형식의 브리프를 바로 생성.</li>
+      <li><b>즉시 적용</b>: 새로운 인터뷰/회의록/녹취록을 붙여넣으면 동일 품질·형식의 요약을 바로 생성.</li>
       <li><b>일관성</b>: 7개 섹션 형식과 환각 억제 규칙이 매번 동일하게 강제됨 → 팀 공유·자동화에 적합.</li>
-      <li><b>모델 비교의 결론 반영</b>: 4종 비교에서 1위로 선정된 Claude 환경에 배포 → 검증된 조합.</li>
+      <li><b>모델 교체 가능</b>: 검증된 v2 프롬프트를 스킬로 인코딩 → 실행 환경(Claude Code)과 무관하게 ChatGPT 등 채택 모델로 그대로 적용.</li>
     </ul>
     <blockquote>왜 스킬인가 — GPTs는 ChatGPT 안에서만 동작하지만, 스킬은 실제 코드/문서 작업 환경에서
     파일을 직접 다루며 호출되므로 "업무 자동화" 목적에 더 부합합니다.</blockquote>
